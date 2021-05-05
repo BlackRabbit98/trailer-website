@@ -1,0 +1,13 @@
+.featuredBanner > h1,
+h2,
+h3,
+.rating {
+	color: azure;
+}
+
+.featuredBanner {
+	align-items: center;
+}
+.banner_buttons {
+	margin: 0 30px;
+}

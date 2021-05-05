@@ -1,0 +1,26 @@
+.featured_container {
+	height: 70vh;
+	position: absolute;
+}
+
+.featured_modal {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	z-index: 1;
+	top: 0;
+	left: 0;
+	background: radial-gradient(
+		51.61% 381.19% at 76.59% 30.58%,
+		rgba(0, 0, 0, 0.19) 0%,
+		rgba(0, 0, 0, 0.95) 100%
+	);
+}
+
+.featuredImg {
+	object-fit: cover;
+	width: 100%;
+	height: 100%;
+	left: 0px;
+	top: 0px;
+}
