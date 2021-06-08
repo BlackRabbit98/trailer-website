@@ -1,0 +1,28 @@
+.tvShows {
+	background-color: #121212;
+	min-height: 100vh;
+	width: 100%;
+	overflow: hidden;
+}
+.tvShowsButton {
+	margin-top: 100px;
+	background-color: aquamarine;
+	color: white;
+	border-radius: 15%;
+}
+.tvShowsRow {
+	margin-top: 1vh;
+	display: flex;
+	flex-direction: column;
+	overflow-x: scroll;
+}
+
+.tvShowsRow > p {
+	color: white;
+	font-size: 30px;
+	text-align: left;
+}
+.tvShowsRowImages {
+	display: flex;
+	overflow-x: scroll;
+}

@@ -3,9 +3,13 @@
 	width: 100%;
 	background-color: #121212;
 	position: relative;
+	overflow-x: hidden;
 }
 .homeScreen_rows {
 	z-index: 2;
 	position: absolute;
 	margin-top: 20vh;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
 }

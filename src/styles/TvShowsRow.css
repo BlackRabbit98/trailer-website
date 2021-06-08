@@ -1,0 +1,23 @@
+.tvShowsRowsPosters {
+	display: flex;
+	min-width: 100%;
+}
+
+.leftRowPosters {
+	display: flex;
+	flex-direction: column;
+}
+
+.leftRowPosters__top,
+.leftRowPosters__bottom {
+	display: flex;
+}
+
+.rightRowPosters > img {
+	min-height: 100%;
+}
+
+.rightRowPosters > div > img {
+	height: 100%;
+	object-fit: cover;
+}

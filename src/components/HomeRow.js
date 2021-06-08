@@ -1,20 +1,25 @@
 import React from 'react';
 import '../styles/HomeRow.css';
+import RowImage from './RowImage';
 import RowPoster from '../assets/RowPoster.png';
+import RowPoster1 from '../assets/RowPoster1.png';
+import RowPoster2 from '../assets/RowPoster2.png';
+import RowPoster3 from '../assets/RowPoster3.png';
+import RowPoster4 from '../assets/RowPoster4.png';
 
 const HomeRow = () => {
+	const images = [RowPoster, RowPoster1, RowPoster2, RowPoster3, RowPoster4];
 	return (
 		<div className="homeRow">
 			<h2>Row title</h2>
-			<div className="rowImages">
-				<img className="poster1" src={RowPoster} alt="row poster" />
-				<img className="poster2" src={RowPoster} alt="row poster" />
-				<img className="poster3" src={RowPoster} alt="row poster" />
-				<img className="poster4" src={RowPoster} alt="row poster" />
-				<img className="poster5" src={RowPoster} alt="row poster" />
-				<img className="poster3" src={RowPoster} alt="row poster" />
-				<img className="poster4" src={RowPoster} alt="row poster" />
-				<img className="poster5" src={RowPoster} alt="row poster" />
+			<div className="row">
+				{images.map((movie) => (
+					<RowImage imgSource={movie} />
+				))}
+
+				{images.map((movie) => (
+					<RowImage imgSource={movie} />
+				))}
 			</div>
 		</div>
 	);
