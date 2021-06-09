@@ -9,7 +9,6 @@
 	overflow: hidden;
 	height: 66px;
 	top: 0px;
-
 	background: linear-gradient(
 		180deg,
 		#000000 48.96%,
@@ -27,9 +26,7 @@
 	color: #02ffd1;
 	font-family: PT Sans;
 	font-style: normal;
-	font-weight: bold;
-	font-size: 25px;
-	line-height: 30px;
+	font-size: 35px;
 }
 .header_center {
 	display: flex;

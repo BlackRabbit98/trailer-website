@@ -1,0 +1,29 @@
+.tvShowsRow::-webkit-scrollbar {
+	display: none;
+}
+.tvShowsRowImages::-webkit-scrollbar {
+	display: none;
+}
+.tvShowsRowsPosters {
+	display: flex;
+}
+
+.leftRowPosters {
+	display: flex;
+	flex-direction: column;
+}
+
+.leftRowPosters__top,
+.leftRowPosters__bottom {
+	display: flex;
+}
+
+.rightRowPosters {
+	display: flex;
+	min-width: 500px;
+}
+
+.rightRowPosters > img {
+	height: 100%;
+	object-fit: contain;
+}

@@ -1,13 +1,53 @@
-.featuredBanner > h1,
-h2,
+.featuredBanner {
+	display: flex;
+	flex-direction: column;
+	padding: 0;
+	margin-top: -50px;
+	margin-bottom: 60px;
+}
+
+.featuredBanner > h2,
 h3,
 .rating {
 	color: azure;
 }
 
-.featuredBanner {
-	align-items: center;
+.bannerbutton {
+	display: flex;
 }
-.banner_buttons {
-	margin: 0 30px;
+.info_button {
+	width: 70px;
+	height: 70px;
+	background: linear-gradient(
+		263.41deg,
+		rgba(1, 141, 185, 0.71) 0%,
+		#02ffd1 100%
+	);
+	border-radius: 50px;
+}
+
+.featuredBanner > p {
+	padding-top: 0;
+	width: 502px;
+	height: 70px;
+	font-family: Sansation;
+	font-size: 40px;
+	line-height: 90px;
+	color: #02ffd1;
+}
+
+.play_button,
+.mylist_button {
+	align-items: center;
+	height: 35px;
+	cursor: pointer;
+	margin-top: 5px;
+	margin-bottom: 15px;
+	background: linear-gradient(
+		263.41deg,
+		rgba(1, 141, 185, 0.71) 0%,
+		#02ffd1 100%
+	);
+	border-radius: 5px;
+	color: white;
 }

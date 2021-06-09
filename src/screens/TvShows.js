@@ -10,9 +10,8 @@ const TvShows = () => {
 			<button className="tvShowsButton">
 				<RectangleButton Icon={PlayArrowIcon} title="Genres" />
 			</button>
-
-			<TvShowsRows title="Bhalh Blha" />
-			<TvShowsRows />
+			<TvShowsRows title="Latest Movies" />
+			<TvShowsRows title="Top Rated Movies" />
 		</div>
 	);
 };

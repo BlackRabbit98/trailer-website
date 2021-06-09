@@ -1,23 +1,21 @@
-.tvShowsRowsPosters {
-	display: flex;
-	min-width: 100%;
-}
-
-.leftRowPosters {
+.tvShowsRow {
 	display: flex;
 	flex-direction: column;
+	overflow-x: scroll;
+	margin-top: 30px;
+	margin-left: 20px;
 }
 
-.leftRowPosters__top,
-.leftRowPosters__bottom {
+.tvShowsRow > p {
+	color: white;
+	text-align: left;
+	padding-bottom: 12px;
+	font-family: Roboto;
+	font-style: normal;
+	font-size: 25px;
+}
+.tvShowsRowImages {
 	display: flex;
-}
-
-.rightRowPosters > img {
-	min-height: 100%;
-}
-
-.rightRowPosters > div > img {
-	height: 100%;
-	object-fit: cover;
+	overflow-x: scroll;
+	grid-gap: 0.5px;
 }

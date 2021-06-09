@@ -1,28 +1,22 @@
 .tvShows {
 	background-color: #121212;
 	min-height: 100vh;
-	width: 100%;
+	min-width: 100%;
 	overflow: hidden;
-}
-.tvShowsButton {
-	margin-top: 100px;
-	background-color: aquamarine;
-	color: white;
-	border-radius: 15%;
-}
-.tvShowsRow {
-	margin-top: 1vh;
 	display: flex;
 	flex-direction: column;
-	overflow-x: scroll;
 }
-
-.tvShowsRow > p {
+.tvShowsButton {
+	height: 35px;
+	max-width: 100px;
+	cursor: pointer;
+	margin-left: 20px;
+	margin-top: 100px;
+	background: linear-gradient(
+		263.41deg,
+		rgba(1, 141, 185, 0.71) 0%,
+		#02ffd1 100%
+	);
+	border-radius: 5px;
 	color: white;
-	font-size: 30px;
-	text-align: left;
-}
-.tvShowsRowImages {
-	display: flex;
-	overflow-x: scroll;
 }

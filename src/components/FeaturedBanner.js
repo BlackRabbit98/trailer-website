@@ -8,18 +8,17 @@ import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 const FeaturedBanner = () => {
 	return (
 		<div className="featuredBanner">
-			<h1 className="banner_title">Movie Name</h1>
-			<h2>Movie release Date</h2>
-			<h1 className="banner_description">Description</h1>
+			<p className="banner_title">Movie Name (Date)</p>
+			<h2 className="banner_description">Description </h2>
 			<div className="rating">Ratings</div>
 			<div className="banner_buttons">
-				<button>
+				<button className="play_button">
 					<RectangleButton Icon={PlayArrowIcon} title="Play" />
 				</button>
-				<button>
+				<button className="mylist_button">
 					<RectangleButton Icon={AddIcon} title="My List" />
 				</button>
-				<InfoIcon className="banner_button3" />
+				<InfoIcon className="info_button" />
 			</div>
 		</div>
 	);

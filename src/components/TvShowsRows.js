@@ -1,6 +1,6 @@
 import React from 'react';
 import TvShowsRowImages from './TvShowsRowImages';
-import '../styles/TvShows.css';
+import '../styles/TvShowsRow.css';
 
 const TvShowsRows = ({ title }) => {
 	return (

@@ -1,7 +1,7 @@
 import React from 'react';
 import RowImage from './RowImage';
 import RowPoster from '../assets/RowPoster.png';
-import '../styles/TvShowsRow.css';
+import '../styles/TvShowsRowImages.css';
 
 const TvShowsRowImages = () => {
 	return (
