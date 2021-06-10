@@ -1,5 +1,9 @@
 .tvShows {
-	background-color: #121212;
+	background: linear-gradient(
+		325.6deg,
+		#00f0ff -0.29%,
+		rgba(0, 0, 0, 0.87) 68.24%
+	);
 	min-height: 100vh;
 	min-width: 100%;
 	overflow: hidden;

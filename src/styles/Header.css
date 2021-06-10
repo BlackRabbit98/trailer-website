@@ -33,7 +33,7 @@
 	flex: 1;
 	justify-content: center;
 }
-.header_center > p {
+.home_link > p {
 	margin: 0 15px;
 	cursor: pointer;
 	font-family: Roboto;
@@ -43,6 +43,11 @@
 	font-weight: bold;
 	color: #ffffff;
 }
+
+.home_link {
+	text-decoration: none;
+	margin-right: 15px;
+}
 .header_right {
 	display: flex;
 	align-items: center;
@@ -51,4 +56,22 @@
 .search_icon,
 .avatar {
 	color: #02ffd1 !important;
+}
+
+.home_link > p:hover,
+.active_link > p {
+	color: #02ffd1;
+	position: relative;
+}
+
+.active_link > p::after {
+	background: #02ffd1;
+	position: absolute;
+	min-width: 140%;
+	bottom: -17px;
+	content: '';
+	display: block;
+	min-height: 2.5px;
+	z-index: 999;
+	left: -21%;
 }

@@ -1,6 +1,9 @@
 import './App.css';
 import HomeScreen from './screens/HomeScreen';
-import TvShows from './screens/TvShows';
+import TvShowsScreen from './screens/TvShowsScreen';
+import MoviesScreen from './screens/MoviesScreen';
+import NewScreen from './screens/NewScreen';
+import MyListScreen from './screens/MyListScreen';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Header from './components/Header';
 
@@ -14,7 +17,16 @@ function App() {
 						<HomeScreen />
 					</Route>
 					<Route exact path="/tvshows">
-						<TvShows />
+						<TvShowsScreen />
+					</Route>
+					<Route exact path="/movies">
+						<MoviesScreen />
+					</Route>
+					<Route exact path="/new">
+						<NewScreen />
+					</Route>
+					<Route exact path="/mylist">
+						<MyListScreen />
 					</Route>
 				</Switch>
 			</Router>
