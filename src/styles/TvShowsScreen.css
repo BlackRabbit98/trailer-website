@@ -23,4 +23,6 @@
 	);
 	border-radius: 5px;
 	color: white;
+	border: none;
+	outline: none;
 }

@@ -12,12 +12,14 @@ h3,
 	color: azure;
 }
 
-.bannerbutton {
+.banner_buttons {
 	display: flex;
+	justify-content: center;
 }
 .info_button {
-	width: 70px;
-	height: 70px;
+	margin-top: 5px;
+	width: 35px !important;
+	height: 35px !important;
 	background: linear-gradient(
 		263.41deg,
 		rgba(1, 141, 185, 0.71) 0%,
@@ -41,6 +43,7 @@ h3,
 .mylist_button {
 	align-items: center;
 	height: 35px;
+	width: 99px;
 	cursor: pointer;
 	margin-top: 5px;
 	margin-bottom: 15px;
@@ -51,4 +54,7 @@ h3,
 	);
 	border-radius: 5px;
 	color: white;
+	border: none;
+	outline: none;
+	margin-right: 10px;
 }
