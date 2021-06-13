@@ -1,24 +1,49 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import '../styles/HomeRow.css';
-import RowImage from './RowImage';
-import RowPoster from '../assets/RowPoster.png';
-import RowPoster1 from '../assets/RowPoster1.png';
-import RowPoster2 from '../assets/RowPoster2.png';
-import RowPoster3 from '../assets/RowPoster3.png';
-import RowPoster4 from '../assets/RowPoster4.png';
+import axios from '../axios';
 
-const HomeRow = () => {
-	const images = [RowPoster, RowPoster1, RowPoster2, RowPoster3, RowPoster4];
+const HomeRow = ({ title, fetchUrl }) => {
+	const [movies, setMovies] = useState([]);
+
+	const baseUrl = 'https://image.tmdb.org/t/p/w500';
+
+	useEffect(() => {
+		async function fetchData() {
+			const request = await axios.get(fetchUrl);
+			setMovies(request.data.results);
+			console.log(`request.data.results`, request.data.results);
+			return request;
+		}
+		fetchData();
+	}, [fetchUrl]);
+
 	return (
 		<div className="homeRow">
-			<h2>Row title</h2>
-			<div className="row">
-				{images.map((movie) => (
-					<RowImage imgSource={movie} />
-				))}
+			<h2>{title}</h2>
 
-				{images.map((movie) => (
-					<RowImage imgSource={movie} />
+			<div className="row">
+				{movies.map((movie) => (
+					<div className="imageBox">
+						<img
+							loading="lazy"
+							className="RowImage"
+							src={`${baseUrl}${movie.poster_path}`}
+							alt={movie.name}
+						/>
+						<div className="imageBackdrop">
+							<div className="imageBackdropButtons">
+								<button>
+									<p>A</p>
+								</button>
+								<button>
+									<p>A</p>
+								</button>
+								<button>
+									<p>A</p>
+								</button>
+							</div>
+						</div>
+					</div>
 				))}
 			</div>
 		</div>

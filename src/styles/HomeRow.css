@@ -16,3 +16,71 @@
 .row {
 	display: flex;
 }
+
+.RowImage {
+	height: 350px;
+	transform: scale(1);
+	transition: transform 400ms ease-in-out;
+}
+
+.imageBox {
+	position: relative;
+	overflow: hidden;
+	border-radius: 40px;
+	display: flex;
+	cursor: pointer;
+	margin-right: 20px;
+}
+
+.imageBackdrop {
+	position: absolute;
+	display: flex;
+	justify-content: space-around;
+	height: 100%;
+	width: 100%;
+	background: radial-gradient(
+		76.27% 76.27% at 53.32% 100%,
+		#000000 0%,
+		rgba(0, 0, 0, 0.3) 100%
+	);
+	bottom: -200%;
+	left: 0;
+}
+.imageBackdropButtons {
+	margin-top: auto;
+	margin-bottom: 20px;
+	display: flex;
+}
+.imageBackdropButtons > button {
+	margin: 0;
+	outline: none;
+	background: linear-gradient(
+		263.41deg,
+		rgba(1, 141, 185, 0.71) 0%,
+		#02ffd1 100%
+	);
+	color: white;
+	border: none;
+	margin-right: 10px;
+	height: 40px;
+	width: 40px;
+	border-radius: 100%;
+	padding: 20px;
+	text-align: center;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+
+.imageBackdropButtons > button > p {
+	font-weight: 600;
+	font-size: 18px;
+}
+
+.imageBox:hover .imageBackdrop {
+	bottom: 0;
+}
+.imageBox:hover .RowImage {
+	transform: scale(1.1);
+}
