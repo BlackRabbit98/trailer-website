@@ -11,7 +11,6 @@ const HomeRow = ({ title, fetchUrl }) => {
 		async function fetchData() {
 			const request = await axios.get(fetchUrl);
 			setMovies(request.data.results);
-			console.log(`request.data.results`, request.data.results);
 			return request;
 		}
 		fetchData();
@@ -22,8 +21,8 @@ const HomeRow = ({ title, fetchUrl }) => {
 			<h2>{title}</h2>
 
 			<div className="row">
-				{movies.map((movie) => (
-					<div className="imageBox">
+				{movies?.map((movie, idx) => (
+					<div className="imageBox" key={idx}>
 						<img
 							loading="lazy"
 							className="RowImage"

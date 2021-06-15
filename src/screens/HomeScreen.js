@@ -2,7 +2,6 @@ import React from 'react';
 import FeaturedMovie from '../components/FeaturedMovie';
 import HomeRow from '../components/HomeRow';
 import '../styles/HomeScreen.css';
-import FeaturedBanner from '../components/FeaturedBanner';
 import requests from '../Requests';
 
 const HomeScreen = () => {
@@ -10,7 +9,6 @@ const HomeScreen = () => {
 		<div className="homeScreen">
 			<FeaturedMovie />
 			<div className="homeScreen_rows">
-				<FeaturedBanner />
 				<HomeRow
 					title="Trending Now"
 					type="movie"
