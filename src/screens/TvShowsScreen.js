@@ -3,6 +3,7 @@ import RectangleButton from '../components/RectangleButton';
 import TvShowsRows from '../components/TvShowsRows';
 import '../styles/TvShowsScreen.css';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
+import requests from '../Requests';
 
 const TvShows = () => {
 	return (
@@ -10,9 +11,21 @@ const TvShows = () => {
 			<button className="tvShowsButton">
 				<RectangleButton Icon={PlayArrowIcon} title="Genres" />
 			</button>
-			<TvShowsRows title="Latest Movies" />
-			<TvShowsRows title="Top Rated Movies" />
-			<TvShowsRows title="Horror Movies" />
+			<TvShowsRows
+				title="Reality shows"
+				type="tv"
+				fetchUrl={requests.fetchTrending}
+			/>
+			{/* <TvShowsRows
+				title="Drama"
+				type="tv"
+				fetchUrl={requests.fetchAnimation}
+			/>
+			<TvShowsRows
+				title="Science Fiction"
+				type="movie"
+				fetchUrl={requests.fetchScifi}
+			/> */}
 		</div>
 	);
 };
