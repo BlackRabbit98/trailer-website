@@ -13,19 +13,19 @@ const TvShows = () => {
 			</button>
 			<TvShowsRows
 				title="Reality shows"
-				type="tv"
+				type="movie"
 				fetchUrl={requests.fetchTrending}
 			/>
-			{/* <TvShowsRows
+			<TvShowsRows
 				title="Drama"
-				type="tv"
+				type="movie"
 				fetchUrl={requests.fetchAnimation}
 			/>
 			<TvShowsRows
 				title="Science Fiction"
 				type="movie"
 				fetchUrl={requests.fetchScifi}
-			/> */}
+			/>
 		</div>
 	);
 };

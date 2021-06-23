@@ -3,6 +3,7 @@ import '../styles/TvShowsRow.css';
 import { useState, useEffect } from 'react';
 import axios from '../axios';
 import '../styles/TvShowsRowImages.css';
+import '../styles/RowImage.css';
 import { Grow } from '@material-ui/core';
 import ModalVideo from 'react-modal-video';
 
@@ -37,16 +38,20 @@ const TvShowsRows = ({ title, fetchUrl, type }) => {
 		async function fetchData() {
 			const request = await axios.get(fetchUrl);
 			setMovies([...request.data.results]);
-			console.log(request.data.results);
+			console.log('MovieData: ', request.data.results);
 			return request;
 		}
 		fetchData();
 	}, [fetchUrl]);
 
-	const RowImage = (imgSource, id) => (
+	const RowImage = ({
+		imgSource = 'https://omegamma.com.au/wp-content/uploads/2017/04/default-image-620x600.jpg',
+		id,
+	}) => (
 		<div className="imageBox">
 			<img className="RowImage" src={imgSource} alt="" />
 			<div className="imageBackdrop">
+				{console.log(id)}
 				<div className="imageBackdropButtons">
 					<div onClick={() => trailer(id)}>
 						<i className="fas fa-play"></i>
@@ -62,7 +67,7 @@ const TvShowsRows = ({ title, fetchUrl, type }) => {
 		</div>
 	);
 
-	const Rows = (start = 0) => (
+	const TvShowRowStructure = ({ start = 0 }) => (
 		<div className="tvShowsRowsPosters">
 			{videoId && playing && videoId.site === 'YouTube' && (
 				<Grow in={playing} mountOnEnter unmountOnExit>
@@ -119,8 +124,8 @@ const TvShowsRows = ({ title, fetchUrl, type }) => {
 			<div className="rightRowPosters">
 				<img
 					src={`${baseUrl}${movies[start + 6]?.poster_path}`}
-					id={movies[start + 6]?.id}
 					alt=""
+					onClick={() => trailer(movies[start + 6]?.id)}
 				/>
 			</div>
 		</div>
@@ -130,7 +135,8 @@ const TvShowsRows = ({ title, fetchUrl, type }) => {
 		<div className="tvShowsRow">
 			<p>{title}</p>
 			<div className="tvShowsRowImages">
-				{movies.length >= 14 && <Rows />}
+				{movies && <TvShowRowStructure start={0} />}
+				{movies && <TvShowRowStructure start={7} />}
 			</div>
 		</div>
 	);

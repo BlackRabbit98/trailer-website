@@ -7,6 +7,7 @@ import MyListScreen from './screens/MyListScreen';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Header from './components/Header';
 import MovieInfo from './components/MovieInfo';
+import LoginScreen from './screens/LoginScreen';
 
 function App() {
 	return (
@@ -21,10 +22,12 @@ function App() {
 						<TvShowsScreen />
 					</Route>
 					<Route exact path="/movies">
+						{/*<MovieScreen />*/}
 						<MovieInfo />
 					</Route>
 					<Route exact path="/new">
-						<NewScreen />
+						{/*<NewScreen />*/}
+						<LoginScreen />
 					</Route>
 					<Route exact path="/mylist">
 						<MyListScreen />
