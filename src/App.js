@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Header from './components/Header';
 import MovieInfo from './components/MovieInfo';
 import LoginScreen from './screens/LoginScreen';
+import ProfileScreen from './screens/ProfileScreen';
 
 function App() {
 	return (
@@ -23,7 +24,8 @@ function App() {
 					</Route>
 					<Route exact path="/movies">
 						{/*<MovieScreen />*/}
-						<MovieInfo />
+						{/*<MovieInfo />*/}
+						{<ProfileScreen />}
 					</Route>
 					<Route exact path="/new">
 						{/*<NewScreen />*/}

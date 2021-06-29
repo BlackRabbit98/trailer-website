@@ -1,0 +1,236 @@
+.profileScreen {
+	background: linear-gradient(
+		325.6deg,
+		#00f0ff -0.29%,
+		rgba(0, 0, 0, 0.87) 68.24%
+	);
+	min-height: 100vh;
+	min-width: 100%;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	padding-top: 100px;
+}
+
+.profileScreen_top {
+	display: flex;
+	min-height: 5vh;
+	min-width: 100%;
+	align-items: center;
+	margin-left: 100px;
+}
+
+.backArrow_button {
+	width: 30px;
+	height: 30px;
+	border-radius: 20px;
+	border: none;
+	margin-right: 30px;
+}
+
+.profileScreen_top > p {
+	color: #ffffff;
+	font-weight: bold;
+	font-size: 25px;
+}
+
+.profileScreen_buttom {
+	display: flex;
+	margin-top: 15px;
+}
+
+.profileScreen_sidebar {
+	width: 200px;
+	height: 350px;
+	margin-left: 180px;
+	padding-top: 60px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.profilePicture {
+	position: relative;
+	height: 140px;
+	width: 140px;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.15);
+}
+
+.editButton {
+	position: absolute;
+	right: -2px;
+	top: 20px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 25px;
+	width: 25px;
+	border-radius: 60%;
+	border: none;
+	align-items: center;
+	background: linear-gradient(
+		263.41deg,
+		rgba(1, 141, 185, 0.71) 0%,
+		#02ffd1 100%
+	);
+	color: #ffffff;
+}
+
+.backArrow_button:hover {
+	background: #02ffd1;
+}
+
+.profileScreen_sidebar > p {
+	font-family: Roboto;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 20px;
+	color: #ffffff;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.profile_signOutButton {
+	width: 100px;
+	height: 35px;
+	background: linear-gradient(
+		263.41deg,
+		rgba(1, 141, 185, 0.71) 0%,
+		#02ffd1 100%
+	);
+	border-radius: 5px;
+	border: none;
+	cursor: pointer;
+
+	color: white;
+	font-size: 13px;
+	font-weight: bold;
+}
+
+.profileScreen_middle {
+	display: flex;
+	flex-direction: column;
+	width: 500px;
+	height: 600px;
+	margin-left: 30px;
+}
+
+.profileScreen_middleTop > h1,
+.profileScreen_middleButtom > h2 {
+	color: white;
+	padding-bottom: 10px;
+}
+
+.personalDetails_container {
+	display: flex;
+	width: 500px;
+	height: 210px;
+	background: rgba(255, 255, 255, 0.15);
+	border-radius: 20px;
+	padding-top: 10px;
+	margin-bottom: 30px;
+}
+
+.personalDetails_containerLeft {
+	display: flex;
+	flex-direction: column;
+	margin-left: 20px;
+}
+
+.personalDetails_containerLeft > p {
+	font-weight: bold;
+	font-size: 20px;
+	color: #ffffff;
+}
+
+.personalDetails_containerLeft > h4 {
+	color: #ffffff;
+	margin-bottom: 1.5em;
+}
+
+.personalDetails_containerRight {
+	display: flex;
+	flex-direction: column;
+	margin-left: 230px;
+}
+
+.editButton1,
+.editButton2,
+.editButton3 {
+	width: 100px;
+	height: 35px;
+	background: linear-gradient(
+		263.41deg,
+		rgba(1, 141, 185, 0.71) 0%,
+		#02ffd1 100%
+	);
+	border-radius: 5px;
+	border: none;
+	color: white;
+	margin-top: 0.5em;
+	margin-bottom: 2.2em;
+	cursor: pointer;
+}
+
+.editButton1 > i,
+.editButton2 > i,
+.editButton3 > i {
+	margin-right: 15px;
+}
+
+.profileScreen_middleButtom {
+	display: flex;
+	flex-direction: column;
+}
+
+.moreFeatures_container {
+	display: flex;
+	width: 690px;
+	height: 310px;
+	border-radius: 20px;
+	padding-top: 10px;
+	margin-bottom: 30px;
+}
+
+.featuresContainer1,
+.featuresContainer2,
+.featuresContainer3 {
+	width: 200px;
+	height: 300px;
+	background: rgba(255, 255, 255, 0.15);
+	border-radius: 20px;
+	margin-right: 20px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding-top: 10px;
+	color: white;
+}
+
+.featuresButton1,
+.featuresButton2,
+.featuresButton3 {
+	width: 100px;
+	height: 35px;
+	background: linear-gradient(
+		263.41deg,
+		rgba(1, 141, 185, 0.71) 0%,
+		#02ffd1 100%
+	);
+	border-radius: 5px;
+	border: none;
+	color: white;
+	margin-top: 0.5em;
+	margin-bottom: 2.2em;
+	cursor: pointer;
+}
+
+.middleText1 {
+	margin-top: 4.5em;
+}
+
+.middleText,
+.buttomText {
+	margin-top: 3.5em;
+}

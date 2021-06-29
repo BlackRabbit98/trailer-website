@@ -1,16 +1,25 @@
 import React from 'react';
 import '../styles/LoginScreen.css';
-import LoginPoster from '../assets/LoginPoster.png';
+import LoginPoster from '../assets/LoginPoster.jpg';
 import LoginPoster1 from '../assets/LoginPoster1.png';
 import LoginPoster2 from '../assets/LoginPoster2.png';
 import LoginPoster3 from '../assets/LoginPoster3.png';
 import LoginPoster4 from '../assets/LoginPoster4.png';
 import LoginPoster5 from '../assets/LoginPoster5.png';
 import LoginPoster6 from '../assets/LoginPoster6.png';
+import { useState } from 'react';
+import Auth from '../components/Auth';
 
 const LoginScreen = () => {
+	const [loginForm, setLoginForm] = useState(false);
+
+	const loginHandler = () => {
+		setLoginForm(!loginForm);
+	};
+
 	return (
 		<div className="loginScreen">
+			{loginForm && <Auth loginHandler={loginHandler} />}
 			<div className="loginScreen_top">
 				<img
 					className="loginScreen_poster"
@@ -28,8 +37,12 @@ const LoginScreen = () => {
 					</p>
 
 					<div className="emailbar">
-						<p>Email Address</p>
-						<button>Get Started</button>
+						<input type="email" placeholder="Email Address" />
+						<button
+							className="getStarted_button"
+							onClick={loginHandler}>
+							Get Started
+						</button>
 					</div>
 				</div>
 			</div>
@@ -50,6 +63,7 @@ const LoginScreen = () => {
 					<img src={LoginPoster4} alt="" />
 					<img src={LoginPoster5} alt="" />
 					<img src={LoginPoster6} alt="" />
+					<img src={LoginPoster2} alt="" />
 				</div>
 			</div>
 		</div>

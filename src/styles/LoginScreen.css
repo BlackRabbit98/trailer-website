@@ -6,6 +6,9 @@
 		rgba(0, 0, 0, 0.8) 51.73%,
 		rgba(0, 196, 196, 0.8) 93.27%
 	);
+	position: relative;
+	max-width: 100vw;
+	overflow: hidden;
 }
 
 .loginScreen_top {
@@ -17,6 +20,7 @@
 	max-width: 100vw;
 	height: 30%;
 	background: rgba(0, 0, 0, 0.6);
+	object-fit: scale-down;
 }
 
 .loginScreen_topContents {
@@ -25,6 +29,7 @@
 	align-items: center;
 	justify-content: center;
 	height: 100%;
+	width: 100%;
 	top: 0;
 	z-index: 2;
 	position: absolute;
@@ -44,31 +49,61 @@
 
 .sentence1 {
 	font-weight: 500;
-	font-size: 85px;
-	margin-bottom: 10px;
+	font-size: 75px;
+	margin-bottom: 30px;
 }
 .sentence2 {
 	font-weight: bold;
-	font-size: 50px;
-	margin-bottom: 15px;
+	font-size: 40px;
+	margin-bottom: 30px;
 }
 .sentence3 {
 	font-weight: normal;
 	font-size: 25px;
+	margin-bottom: 10px;
 }
 .sentence4 {
 	font-weight: 500;
-	font-size: 50px;
+	font-size: 40px;
 	margin-bottom: 15px;
 }
 
 .emailbar {
+	display: flex;
 	width: 750px;
 	height: 40px;
-	left: 306px;
-	top: 861px;
 	background: #ffffff;
-	border-radius: 15px;
+	border-radius: 5px;
+	align-items: center;
+
+	font-family: Roboto;
+	font-style: normal;
+	font-size: 15px;
+	color: #616161;
+}
+
+.emailbar > input {
+	padding: 10px;
+	height: 20px;
+	width: 80%;
+	border: none;
+	outline: none;
+}
+
+.getStarted_button {
+	margin-left: auto;
+	height: 40px;
+	background: linear-gradient(
+		263.41deg,
+		rgba(1, 141, 185, 0.71) 0%,
+		#02ffd1 100%
+	);
+	border-radius: 5px;
+	border-style: none;
+	color: azure;
+	padding: 10px 20px;
+	cursor: pointer;
+	font-weight: bold;
 }
 
 .loginScreen_bottom {
@@ -83,11 +118,13 @@
 
 .moviePosters {
 	display: flex;
-	width: 120px;
+	max-width: 100vw;
+	overflow-x: scroll;
 	height: 271.82px;
 	filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 	border-radius: 40px;
 	margin-top: 50px;
+	margin-left: 25px;
 }
 
 .moviePosters > img {
