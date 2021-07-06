@@ -11,20 +11,21 @@ const TvShows = () => {
 			<button className="tvShowsButton">
 				<RectangleButton Icon={PlayArrowIcon} title="Genres" />
 			</button>
-			<TvShowsRows
-				title="Reality shows"
-				type="movie"
-				fetchUrl={requests.fetchTrending}
-			/>
+
 			<TvShowsRows
 				title="Drama"
-				type="movie"
-				fetchUrl={requests.fetchAnimation}
+				type="tv"
+				fetchUrl={requests.fetchDrama}
 			/>
 			<TvShowsRows
-				title="Science Fiction"
-				type="movie"
-				fetchUrl={requests.fetchScifi}
+				title="Netflix originals"
+				type="tv"
+				fetchUrl={requests.fetchNetflixOriginals}
+			/>
+			<TvShowsRows
+				title="Reality shows"
+				type="tv"
+				fetchUrl={requests.fetchReality}
 			/>
 		</div>
 	);

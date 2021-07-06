@@ -12,6 +12,9 @@ import Auth from '../components/Auth';
 
 const LoginScreen = () => {
 	const [loginForm, setLoginForm] = useState(false);
+	const [isSignup, setIsSignup] = useState(false);
+
+	const [email, setEmail] = useState(null);
 
 	const loginHandler = () => {
 		setLoginForm(!loginForm);
@@ -19,7 +22,30 @@ const LoginScreen = () => {
 
 	return (
 		<div className="loginScreen">
-			{loginForm && <Auth loginHandler={loginHandler} />}
+			{loginForm && (
+				<Auth
+					loginHandler={loginHandler}
+					getStartedEmail={email}
+					isSignup={isSignup}
+				/>
+			)}
+
+			<div className="loginScreen_header">
+				<div className="loginScreen_headerLeft">
+					<h2>Trailerzz</h2>
+				</div>
+				<div className="loginScreen_headerRight">
+					<button
+						className="loginScreen_signIn"
+						onClick={() => {
+							setIsSignup(false);
+							loginHandler();
+						}}>
+						Sign In
+					</button>
+				</div>
+			</div>
+
 			<div className="loginScreen_top">
 				<img
 					className="loginScreen_poster"
@@ -37,10 +63,17 @@ const LoginScreen = () => {
 					</p>
 
 					<div className="emailbar">
-						<input type="email" placeholder="Email Address" />
+						<input
+							type="email"
+							placeholder="Email Address"
+							onChange={(e) => setEmail(e.target.value)}
+						/>
 						<button
 							className="getStarted_button"
-							onClick={loginHandler}>
+							onClick={() => {
+								setIsSignup(true);
+								loginHandler();
+							}}>
 							Get Started
 						</button>
 					</div>

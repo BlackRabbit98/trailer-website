@@ -27,7 +27,14 @@ const HomeRow = ({ title, fetchUrl, type }) => {
 			const requested = await axios.get(
 				`/${type}/${id}/videos?api_key=${API_KEY}&append_to_response=videos`
 			);
-			setVideoId(requested.data?.results[0]);
+			if (requested.data?.results.length < 1) {
+				setVideoId({
+					site: 'YouTube',
+					key: 'LMlCN6_vUvs',
+				});
+			} else {
+				setVideoId(requested.data?.results[0]);
+			}
 			return requested;
 		}
 		playTrailer(id);

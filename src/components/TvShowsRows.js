@@ -22,14 +22,29 @@ const TvShowsRows = ({ title, fetchUrl, type }) => {
 			const requested = await axios.get(
 				`/${type}/${id}/videos?api_key=${API_KEY}&append_to_response=videos`
 			);
-			setVideoId(requested.data?.results[0]);
+
+			if (requested.data?.results.length < 1) {
+				setVideoId({
+					site: 'YouTube',
+					key: 'LMlCN6_vUvs',
+				});
+			} else {
+				setVideoId(requested.data?.results[0]);
+			}
 			return requested;
 		}
 		playTrailer(id);
 	};
 
 	useEffect(() => {
-		if (videoId && videoId.site && videoId.site === 'YouTube') {
+		if (
+			videoId &&
+			videoId !== '' &&
+			videoId !== null &&
+			videoId !== undefined &&
+			videoId.site &&
+			videoId.site === 'YouTube'
+		) {
 			setPlaying(true);
 		}
 	}, [videoId]);
@@ -51,7 +66,6 @@ const TvShowsRows = ({ title, fetchUrl, type }) => {
 		<div className="imageBox">
 			<img className="RowImage" src={imgSource} alt="" />
 			<div className="imageBackdrop">
-				{console.log(id)}
 				<div className="imageBackdropButtons">
 					<div onClick={() => trailer(id)}>
 						<i className="fas fa-play"></i>
@@ -123,10 +137,23 @@ const TvShowsRows = ({ title, fetchUrl, type }) => {
 			</div>
 			<div className="rightRowPosters">
 				<img
+					className="rightRowImage"
 					src={`${baseUrl}${movies[start + 6]?.poster_path}`}
 					alt=""
-					onClick={() => trailer(movies[start + 6]?.id)}
 				/>
+				<div className="rightRow_imageBackdrop">
+					<div className="rightRow_imageBackdropButtons">
+						<div onClick={() => trailer(movies[start + 6]?.id)}>
+							<i className="fas fa-play"></i>
+						</div>
+						<div>
+							<i className="fas fa-plus"></i>
+						</div>
+						<div>
+							<i className="fas fa-info-circle"></i>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	);

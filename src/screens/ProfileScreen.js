@@ -1,12 +1,140 @@
 import React from 'react';
+import { useRef } from 'react';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { logout } from '../actions/userActions';
 import '../styles/ProfileScreen.css';
+import { auth } from '../utils/firebase';
 
 const ProfileScreen = () => {
+	const [displayName, setDisplayName] = useState('');
+	const [email, setEmail] = useState('');
+	const [photoURL, setPhotoURL] = useState('');
+	const [password, setPassword] = useState('');
+	const [updateVal, setUpdateVal] = useState('');
+	const updateValRef = useRef(null);
+
+	const [type, setType] = useState('');
+	const [showPopup, setShowPopup] = useState(false);
+
+	const dispatch = useDispatch();
+	const history = useHistory();
+
+	useEffect(() => {
+		const user = auth.currentUser;
+		if (user) {
+			setDisplayName(user.displayName);
+			setEmail(user.email);
+			setPhotoURL(user.photoURL);
+		}
+		console.log(user);
+		return () => {
+			//cleanup
+		};
+	}, []);
+
+	const updateUsername = () => {
+		const user = auth.currentUser;
+
+		user.updateProfile({
+			displayName,
+		})
+			.then(() => {
+				// Update successful
+				console.log('Update successful');
+			})
+			.catch((error) => {
+				// An error occurred
+				console.log('Error Occured', error);
+			});
+	};
+
+	const updateUserPhoto = () => {
+		const user = auth.currentUser;
+
+		user.updateProfile({
+			photoURL,
+		})
+			.then(() => {
+				// Update successful
+				console.log('Update successful');
+			})
+			.catch((error) => {
+				// An error occurred
+				console.log('Error Occured', error);
+			});
+	};
+
+	const updateUserEmail = (val) => {
+		const user = auth.currentUser;
+
+		user.updateEmail(val)
+			.then(() => {
+				// Update successful
+				console.log('Update successful');
+			})
+			.catch((error) => {
+				// An error occurred
+				console.log('Error Occured', error);
+			});
+	};
+
+	const updateUserPassword = () => {
+		const user = auth.currentUser;
+
+		user.updatePassword({
+			password,
+		})
+			.then(() => {
+				// Update successful
+				console.log('Update successful');
+			})
+			.catch((error) => {
+				// An error occurred
+				console.log('Error Occured', error);
+			});
+	};
+
+	const ChangeDataPopupSubmitHandler = (e) => {
+		e.preventDefault();
+		console.log(updateValRef.current.value);
+		if (type === 'Email') {
+			updateUserEmail(updateValRef.current.value);
+		}
+		setShowPopup(!showPopup);
+	};
+
+	const ChangeDataPopup = () => (
+		<div className="changeProfileData">
+			<div
+				className="changeProfileData_modal"
+				onClick={(e) => {
+					if (e.target === e.currentTarget) {
+						setShowPopup(!showPopup);
+					}
+				}}
+			/>
+			<div className="changeProfileData_main">
+				<label>New {type}</label>
+				<input type="text" ref={updateValRef} />
+				<button onClick={ChangeDataPopupSubmitHandler}>Save</button>
+			</div>
+		</div>
+	);
+
+	const capitalizeFirstLetter = (s) =>
+		(s && s[0].toUpperCase() + s.slice(1)) || '';
+
 	return (
 		<div className="profileScreen">
+			{showPopup && <ChangeDataPopup />}
 			<div className="profileScreen_top">
-				<button className="backArrow_button">
-					<i class="fas fa-arrow-left"></i>
+				<button
+					className="backArrow_button"
+					onClick={() => history.goBack()}>
+					<i className="fas fa-arrow-left"></i>
 				</button>
 				<p>My Account</p>
 			</div>
@@ -14,12 +142,29 @@ const ProfileScreen = () => {
 			<div className="profileScreen_buttom">
 				<div className="profileScreen_sidebar">
 					<div className="profilePicture">
+						<div>
+							<img
+								src={
+									photoURL ||
+									'https://www.numerator.com/themes/custom/themekit/images/default-profile.png'
+								}
+								alt=""
+							/>
+						</div>
 						<button className="editButton">
-							<i class="far fa-edit"></i>
+							<i className="far fa-edit"></i>
 						</button>
 					</div>
-					<p>User Name</p>
-					<button className="profile_signOutButton">Sign Out</button>
+					<p>
+						{capitalizeFirstLetter(
+							displayName || email.split('@')[0]
+						)}
+					</p>
+					<button
+						className="profile_signOutButton"
+						onClick={() => dispatch(logout())}>
+						Sign Out
+					</button>
 				</div>
 
 				<div className="profileScreen_middle">
@@ -28,23 +173,32 @@ const ProfileScreen = () => {
 						<div className="personalDetails_container">
 							<div className="personalDetails_containerLeft">
 								<p>Display Name</p>
-								<h4>user name</h4>
+								<h4>
+									{capitalizeFirstLetter(
+										displayName || email.split('@')[0]
+									)}
+								</h4>
 								<p>Email</p>
-								<h4>user email</h4>
+								<h4>{email}</h4>
 								<p>Password</p>
-								<h4>user password</h4>
+								<h4>It's a secret!</h4>
 							</div>
 							<div className="personalDetails_containerRight">
 								<button className="editButton1">
-									<i class="far fa-edit"></i>
+									<i className="far fa-edit"></i>
 									Edit
 								</button>
-								<button className="editButton2">
-									<i class="far fa-edit"></i>
+								<button
+									className="editButton2"
+									onClick={() => {
+										setType('Email');
+										setShowPopup(true);
+									}}>
+									<i className="far fa-edit"></i>
 									Edit
 								</button>
 								<button className="editButton3">
-									<i class="far fa-edit"></i>
+									<i className="far fa-edit"></i>
 									Edit
 								</button>
 							</div>

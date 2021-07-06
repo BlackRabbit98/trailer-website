@@ -3,9 +3,15 @@ import '../styles/Header.css';
 import { IconButton } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { logout } from '../actions/userActions';
 
 export default function Header() {
+	const [showAvatarMenu, setShowAvatarMenu] = useState(false);
+	const dispatch = useDispatch();
+	const history = useHistory();
 	return (
 		<div className="header">
 			<div className="header_left">
@@ -52,10 +58,38 @@ export default function Header() {
 				<IconButton>
 					<SearchIcon className="search_icon" />
 				</IconButton>
-
-				<IconButton>
-					<AccountCircleIcon className="avatar" />
-				</IconButton>
+				<div className="avatarmenu_parent">
+					{showAvatarMenu && (
+						<>
+							<div
+								className="avatarContentsModal"
+								onClick={() =>
+									setShowAvatarMenu(!showAvatarMenu)
+								}
+							/>
+							<div
+								className="avatarContents"
+								onClick={() =>
+									setShowAvatarMenu(!showAvatarMenu)
+								}>
+								<div
+									className="avatarContents_myAccountButton"
+									onClick={() => history.push('/myaccount')}>
+									<i class="fas fa-cog"></i>My account
+								</div>
+								<div
+									className="avatarContents_logoutButton"
+									onClick={() => dispatch(logout())}>
+									<i class="fas fa-sign-out-alt"></i>Logout
+								</div>
+							</div>
+						</>
+					)}
+					<IconButton
+						onClick={() => setShowAvatarMenu(!showAvatarMenu)}>
+						<AccountCircleIcon className="avatar" />
+					</IconButton>
+				</div>
 			</div>
 		</div>
 	);

@@ -10,6 +10,7 @@
 	display: flex;
 	flex-direction: column;
 	padding-top: 100px;
+	position: relative;
 }
 
 .profileScreen_top {
@@ -26,6 +27,8 @@
 	border-radius: 20px;
 	border: none;
 	margin-right: 30px;
+	transition: background 300ms ease-in;
+	cursor: pointer;
 }
 
 .profileScreen_top > p {
@@ -56,6 +59,18 @@
 	border-radius: 50%;
 	background: rgba(255, 255, 255, 0.15);
 }
+.profilePicture > div {
+	max-height: 100%;
+	max-width: 100%;
+	overflow: hidden;
+	border-radius: 50%;
+}
+
+.profilePicture > div > img {
+	object-fit: contain;
+	max-height: 100%;
+	max-width: 100%;
+}
 
 .editButton {
 	position: absolute;
@@ -75,6 +90,7 @@
 		#02ffd1 100%
 	);
 	color: #ffffff;
+	cursor: pointer;
 }
 
 .backArrow_button:hover {
@@ -233,4 +249,37 @@
 .middleText,
 .buttomText {
 	margin-top: 3.5em;
+}
+
+.changeProfileData {
+	position: absolute;
+	z-index: 999;
+	min-width: 100vw;
+	min-height: 100vh;
+	display: flex;
+	justify-content: center;
+}
+
+.changeProfileData_main {
+	display: flex;
+	flex-direction: column;
+	margin-top: 50px;
+	padding: 20px;
+	background: rgb(176, 176, 255);
+	max-height: 100px;
+	z-index: 201;
+}
+
+.changeProfileData_main > input,
+.changeProfileData_main > button {
+	margin-top: 20px;
+}
+
+.changeProfileData_modal {
+	position: absolute;
+	z-index: 200;
+	min-height: 200vh;
+	min-width: 200vw;
+	left: -100vw;
+	top: -20vh;
 }

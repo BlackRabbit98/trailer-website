@@ -130,3 +130,50 @@
 .moviePosters > img {
 	padding-right: 20px;
 }
+
+.loginScreen_header {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	position: fixed;
+	z-index: 100;
+	width: 100vw;
+	height: 66px;
+	background: linear-gradient(
+		180deg,
+		#000000 48.96%,
+		rgba(0, 0, 0, 0) 103.13%
+	);
+	mix-blend-mode: normal;
+}
+.loginScreen_headerLeft {
+	padding-left: 20px;
+}
+.loginScreen_headerLeft > h2 {
+	color: #02ffd1;
+	font-family: PT Sans;
+	font-style: normal;
+	font-size: 35px;
+}
+
+.loginScreen_headerRight {
+	align-items: center;
+	padding-right: 50px;
+	margin-left: auto;
+}
+
+.loginScreen_signIn {
+	margin-left: auto;
+	height: 35px;
+	background: linear-gradient(
+		263.41deg,
+		rgba(1, 141, 185, 0.71) 0%,
+		#02ffd1 100%
+	);
+	border-radius: 5px;
+	border-style: none;
+	color: azure;
+	padding: 10px 20px;
+	cursor: pointer;
+	font-weight: bold;
+}

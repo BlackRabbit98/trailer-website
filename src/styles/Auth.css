@@ -1,7 +1,7 @@
 .signUpScreen__Container {
 	position: absolute;
 	top: 0;
-	z-index: 9999;
+	z-index: 99;
 	min-width: 100%;
 	min-height: 100%;
 	background: rgba(0, 0, 0, 0.85);
@@ -53,7 +53,7 @@
 	color: #ffffff;
 }
 
-.signUpScreen > form > p {
+.form-p {
 	text-align: center;
 	margin-top: 7px;
 	margin-bottom: 4px;
@@ -80,7 +80,7 @@
 .signUpScreen > form > input {
 	outline-width: 0;
 	height: 35px;
-	margin-bottom: 20px;
+	margin-top: 20px;
 	border-radius: 5px;
 	border: none;
 	padding: 5px 15px;
@@ -113,4 +113,96 @@
 .signUpScreen__link:hover {
 	cursor: pointer;
 	text-decoration: underline;
+}
+
+.SignInVal {
+	background: rgb(175, 0, 0);
+	color: rgb(255, 255, 255);
+	margin-top: 5px;
+	padding: 6px 7px;
+	border-radius: 5px;
+	font-size: 12px;
+	text-align: center;
+}
+
+.form-p:hover {
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+.forgotPasswordContainer {
+	display: flex;
+	justify-content: center;
+	position: absolute;
+	top: 0;
+	z-index: 100;
+	min-width: 100%;
+	min-height: 100%;
+	background: rgba(0, 0, 0, 0.95);
+}
+
+.forgotPasswordOpen {
+	display: flex;
+	flex-direction: column;
+	z-index: 101;
+	margin-top: 300px;
+	max-width: 320px;
+	min-width: 320px;
+}
+
+.forgotPasswordOpen > i {
+	color: white;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 30px;
+	width: 30px;
+	margin-left: auto;
+	font-size: 22px;
+	margin-bottom: 10px;
+	margin-right: 10px;
+	border-radius: 50px;
+	background: none;
+	transition: background 300ms ease-in;
+}
+
+.forgotPasswordOpen > i:hover {
+	background: #02ffd1;
+	cursor: pointer;
+}
+
+.forgotPasswordOpen > form {
+	padding: 10px 20px;
+	display: flex;
+	flex-direction: column;
+	max-width: 320px;
+	background: linear-gradient(160.6deg, #02c0c0 2.26%, #010101 97.33%);
+	box-shadow: 0px 4px 4px rgba(255, 255, 255, 0.25);
+	border-radius: 20px;
+}
+
+.forgotPasswordOpen > form > button {
+	margin-top: 20px;
+	margin-bottom: 20px;
+	height: 40px;
+	background: linear-gradient(
+		263.41deg,
+		rgba(1, 141, 185, 0.71) 0%,
+		#02ffd1 100%
+	);
+	border-radius: 5px;
+	border-style: none;
+	color: azure;
+	padding: 10px 20px;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.forgotPasswordOpen > form > input {
+	margin-top: 20px;
+	padding: 10px;
+	height: 20px;
+	border-radius: 5px;
+	border: none;
+	outline: none;
 }
