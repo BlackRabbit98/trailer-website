@@ -86,3 +86,7 @@
 .rightRowPosters:hover .rightRowImage {
 	transform: scale(1.1);
 }
+
+.unfav-icon {
+	background: rgb(255, 157, 0) !important;
+}

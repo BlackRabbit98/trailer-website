@@ -6,11 +6,125 @@ import '../styles/TvShowsRowImages.css';
 import '../styles/RowImage.css';
 import { Grow } from '@material-ui/core';
 import ModalVideo from 'react-modal-video';
+import { useSelector } from 'react-redux';
+import db from '../utils/firebase';
+import { useDispatch } from 'react-redux';
+import { getUserDetails } from '../actions/userActions';
+import { toast } from 'react-toastify';
+import MovieInfo from './MovieInfo';
 
 const TvShowsRows = ({ title, fetchUrl, type }) => {
 	const [movies, setMovies] = useState([]);
 	const [videoId, setVideoId] = useState([]);
 	const [playing, setPlaying] = useState(false);
+	const [showMovieInfo, setShowMovieInfo] = useState(false);
+	const [movieData, setMovieData] = useState([]);
+
+	const dispatch = useDispatch();
+
+	const userLogin = useSelector((state) => state.userLogin);
+	const { userInfo } = userLogin;
+
+	const userDetails = useSelector((state) => state.userDetails);
+	const { user } = userDetails;
+
+	const closeMovieInfoBox = () => {
+		setShowMovieInfo(false);
+	};
+
+	const addToList = async (movieId) => {
+		console.log('You clicked add to list');
+		try {
+			if (user.favMovies.length < Number(user.limit)) {
+				if (!user.favMovies) {
+					await db
+						.collection('movies')
+						.doc(userInfo.uid)
+						.set({
+							favMovies: [movieId],
+							limit: user.limit || 10,
+						});
+
+					dispatch(getUserDetails());
+
+					toast.success('🥰 Movie added to your list!', {
+						position: 'top-center',
+						autoClose: 2500,
+						hideProgressBar: false,
+						closeOnClick: true,
+						pauseOnHover: true,
+						draggable: true,
+						progress: undefined,
+					});
+				} else if (!user.favMovies?.includes(movieId)) {
+					await db
+						.collection('movies')
+						.doc(userInfo.uid)
+						.set({
+							favMovies: [...user.favMovies, movieId],
+							limit: user.limit || 10,
+						});
+
+					dispatch(getUserDetails());
+
+					toast.success('🥰 Movie added to your list!', {
+						position: 'top-center',
+						autoClose: 2500,
+						hideProgressBar: false,
+						closeOnClick: true,
+						pauseOnHover: true,
+						draggable: true,
+						progress: undefined,
+					});
+				}
+			} else {
+				toast.error('🙏 Upgrade your plan for more!', {
+					position: 'top-center',
+					autoClose: 2500,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+				});
+			}
+		} catch (error) {
+			console.log('Error occured', error);
+		}
+	};
+
+	const subtractFromList = async (movieId) => {
+		console.log('You clicked add to list');
+		try {
+			if (user.favMovies && user.favMovies.includes(movieId)) {
+				await db
+					.collection('movies')
+					.doc(userInfo.uid)
+					.set({
+						favMovies: user.favMovies.filter(
+							(item) => item !== movieId
+						),
+						limit: user.limit || 10,
+					});
+
+				dispatch(getUserDetails());
+
+				toast.info('⛔ Movie removed from your list!', {
+					position: 'top-center',
+					autoClose: 2500,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+				});
+			} else {
+				console.log('Not in the list');
+			}
+		} catch (error) {
+			console.log('Error occured', error);
+		}
+	};
 
 	const baseUrl = 'https://image.tmdb.org/t/p/w500';
 
@@ -70,9 +184,24 @@ const TvShowsRows = ({ title, fetchUrl, type }) => {
 					<div onClick={() => trailer(id)}>
 						<i className="fas fa-play"></i>
 					</div>
-					<div>
-						<i className="fas fa-plus"></i>
-					</div>
+
+					{user.favMovies ? (
+						user.favMovies.includes(id) ? (
+							<div
+								className="unfav-icon"
+								onClick={() => subtractFromList(id)}>
+								<i className="fas fa-minus"></i>
+							</div>
+						) : (
+							<div onClick={() => addToList(id)}>
+								<i className="fas fa-plus"></i>
+							</div>
+						)
+					) : (
+						<div onClick={() => addToList(id)}>
+							<i className="fas fa-plus"></i>
+						</div>
+					)}
 					<div>
 						<i className="fas fa-info-circle"></i>
 					</div>
@@ -93,6 +222,14 @@ const TvShowsRows = ({ title, fetchUrl, type }) => {
 					/>
 				</Grow>
 			)}
+
+			{showMovieInfo && (
+				<MovieInfo
+					movies={movieData}
+					closeMovieInfoHandler={closeMovieInfoBox}
+				/>
+			)}
+
 			<div className="leftRowPosters">
 				<div className="leftRowPosters__top">
 					<RowImage
@@ -146,10 +283,36 @@ const TvShowsRows = ({ title, fetchUrl, type }) => {
 						<div onClick={() => trailer(movies[start + 6]?.id)}>
 							<i className="fas fa-play"></i>
 						</div>
-						<div>
-							<i className="fas fa-plus"></i>
-						</div>
-						<div>
+						{user.favMovies ? (
+							user.favMovies.includes(movies[start + 6]?.id) ? (
+								<div
+									className="unfav-icon"
+									onClick={() =>
+										subtractFromList(movies[start + 6]?.id)
+									}>
+									<i className="fas fa-minus"></i>
+								</div>
+							) : (
+								<div
+									onClick={() =>
+										addToList(movies[start + 6]?.id)
+									}>
+									<i className="fas fa-plus"></i>
+								</div>
+							)
+						) : (
+							<div
+								onClick={() =>
+									addToList(movies[start + 6]?.id)
+								}>
+								<i className="fas fa-plus"></i>
+							</div>
+						)}
+						<div
+							onClick={() => {
+								setMovieData(movieData);
+								setShowMovieInfo(true);
+							}}>
 							<i className="fas fa-info-circle"></i>
 						</div>
 					</div>

@@ -2,14 +2,18 @@
 	min-height: 100vh;
 	width: 100%;
 	background-color: #121212;
-	position: relative;
 	overflow-x: hidden;
 }
 .homeScreen_rows {
 	z-index: 2;
-	position: absolute;
 	margin-top: 40vh;
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
+}
+
+@media only screen and (max-height: 600px) {
+	.homeScreen_rows {
+		margin-top: 80vh;
+	}
 }

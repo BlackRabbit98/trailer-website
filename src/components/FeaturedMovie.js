@@ -10,11 +10,18 @@ import RectangleButton from './RectangleButton';
 import AddIcon from '@material-ui/icons/Add';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import Rating from './Rating';
+import MovieInfo from './MovieInfo';
 
 const FeaturedMovie = () => {
 	const [movies, setMovies] = useState([]);
 	const [videoId, setVideoId] = useState([]);
 	const [playing, setPlaying] = useState(false);
+	const [showMovieInfo, setShowMovieInfo] = useState(false);
+	const [movieData, setMovieData] = useState([]);
+
+	const closeMovieInfoBox = () => {
+		setShowMovieInfo(false);
+	};
 
 	useEffect(() => {
 		//console.log('useEffect 1 running');
@@ -73,6 +80,14 @@ const FeaturedMovie = () => {
 					/>
 				</Grow>
 			)}
+
+			{showMovieInfo && (
+				<MovieInfo
+					movie={movieData}
+					closeMovieInfoHandler={closeMovieInfoBox}
+				/>
+			)}
+
 			{movies && movies.backdrop_path && (
 				<header
 					className="featured_container"
@@ -115,7 +130,13 @@ const FeaturedMovie = () => {
 										title="My List"
 									/>
 								</button>
-								<InfoIcon className="info_button" />
+								<InfoIcon
+									className="info_button"
+									onClick={() => {
+										setMovieData(movieData);
+										setShowMovieInfo(true);
+									}}
+								/>
 							</div>
 						</div>
 					</div>

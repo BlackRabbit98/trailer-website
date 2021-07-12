@@ -14,11 +14,22 @@ import {
 	USER_UPDATE_PROFILE_REQUEST,
 	USER_UPDATE_PROFILE_SUCCESS,
 	USER_DETAILS_RESET,
-	USER_VERIFY_REQUEST,
-	USER_VERIFY_FAIL,
-	USER_VERIFY_SUCCESS,
 } from '../constants/userConstants';
-import { auth } from '../utils/firebase';
+import db, { auth } from '../utils/firebase';
+
+const createUserDetails = async (userId) => {
+	console.log('Creating first time user details');
+	try {
+		const createDetails = await db.collection('movies').doc(userId).set({
+			favMovies: [],
+			limit: 10,
+		});
+
+		console.log('Successfully created user details', createDetails);
+	} catch (error) {
+		console.error('Error writing document: ', error);
+	}
+};
 
 export const login = (email, password) => async (dispatch) => {
 	try {
@@ -48,6 +59,8 @@ export const login = (email, password) => async (dispatch) => {
 		// 	{ email, password },
 		// 	config
 		// );
+
+		createUserDetails(user.uid);
 
 		dispatch({
 			type: USER_LOGIN_SUCCESS,
@@ -92,6 +105,7 @@ export const register = (email, password) => async (dispatch) => {
 			email,
 			password
 		);
+		createUserDetails(user.uid);
 
 		dispatch({
 			type: USER_REGISTER_SUCCESS,
@@ -116,48 +130,6 @@ export const register = (email, password) => async (dispatch) => {
 	}
 };
 
-export const verifyUser = () => async (dispatch) => {
-	try {
-		dispatch({
-			type: USER_VERIFY_REQUEST,
-		});
-
-		const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-
-		const config = {
-			headers: {
-				Authorization: `Bearer ${userInfo.token}`,
-			},
-		};
-
-		const { data } = await axios.get(`/api/users/verify`, config);
-
-		dispatch({
-			type: USER_VERIFY_SUCCESS,
-			payload: data,
-		});
-
-		dispatch({
-			type: USER_LOGIN_SUCCESS,
-			payload: data,
-		});
-
-		localStorage.setItem('userInfo', JSON.stringify(data));
-	} catch (error) {
-		const message =
-			error.response && error.response.data.message
-				? error.response.data.message
-				: error.message;
-		if (message === 'Not authorized, token failed') {
-			dispatch(logout());
-		}
-		dispatch({
-			type: USER_VERIFY_FAIL,
-			payload: message,
-		});
-	}
-};
-
 export const getUserDetails = (id) => async (dispatch, getState) => {
 	try {
 		dispatch({
@@ -168,15 +140,15 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
 			userLogin: { userInfo },
 		} = getState();
 
-		const config = {
-			headers: {
-				Authorization: `Bearer ${userInfo.token}`,
-			},
-		};
+		let data;
 
-		const { data } = await axios.get(`/api/users/${id}`, config);
+		const doc = await db.collection('movies').doc(userInfo.uid).get();
 
-		console.log('Data: ', data);
+		if (doc.exists) {
+			data = doc.data();
+		} else {
+			data = null;
+		}
 
 		dispatch({
 			type: USER_DETAILS_SUCCESS,

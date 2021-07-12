@@ -41,7 +41,8 @@
 	margin-right: 40px;
 	z-index: 2;
 	transform: scale(1);
-	transition: transform 300ms ease-in;
+	transition: transform 400ms ease-in-out, margin-right 400ms ease-in-out;
+	cursor: pointer;
 }
 
 .big-poster-img {
@@ -52,6 +53,8 @@
 
 .myList_rowEffects {
 	position: absolute;
+	color: white;
+	width: 300px;
 	margin-top: 60px;
 	z-index: 3;
 }
@@ -74,8 +77,18 @@
 	border-radius: 10px;
 	justify-content: center;
 	align-items: center;
+	cursor: pointer;
 }
 
 .rowEffects_button > button > i {
 	margin-right: 5px;
+}
+
+.myList_rowEffects > h2 {
+	color: turquoise;
+}
+
+.myList_rowEffects > p {
+	margin-top: 10px;
+	margin-bottom: 10px;
 }

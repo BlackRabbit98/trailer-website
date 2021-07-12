@@ -10,11 +10,12 @@ import AddIcon from '@material-ui/icons/Add';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import Rating from './Rating';
 
-const MovieInfo = () => {
-	const [movies, setMovies] = useState([]);
+const MovieInfo = ({ movie: movies, closeMovieInfoHandler }) => {
+	const [movie, setMovie] = useState([]);
 	const [videoId, setVideoId] = useState([]);
 	const [playing, setPlaying] = useState(false);
 
+	console.log('movie:', movie);
 	useEffect(() => {
 		//console.log('useEffect 1 running');
 		async function fetchData() {
@@ -22,7 +23,7 @@ const MovieInfo = () => {
 			const randomNum = Math.floor(
 				Math.random() * (request.data.results.length - 1)
 			);
-			setMovies(request.data.results[randomNum || 0]);
+			setMovie(request.data.results[randomNum || 0]);
 			return request;
 		}
 		fetchData();
@@ -61,7 +62,15 @@ const MovieInfo = () => {
 	};
 
 	return (
-		<div>
+		<div className="movieInfo__containerMain">
+			<div className="movieInfo__modal" />
+
+			<button
+				className="movieInfo__cancel"
+				onClick={() => closeMovieInfoHandler()}>
+				<i className="fas fa-times"></i>
+			</button>
+
 			{videoId && playing && videoId.site === 'YouTube' && (
 				<Grow in={playing} mountOnEnter unmountOnExit>
 					<ModalVideo
@@ -72,8 +81,9 @@ const MovieInfo = () => {
 					/>
 				</Grow>
 			)}
-			{movies && movies.backdrop_path && (
-				<header
+
+			{movie && movie.backdrop_path && (
+				<div
 					className="movieInfo_container"
 					style={{
 						backgroundSize: 'cover',
@@ -125,17 +135,20 @@ const MovieInfo = () => {
 						</div>
 
 						<div className="bottomContents">
-							<div className="trailerList_left">
-								<i className="fas fa-play"></i>
+							<div className="trailersList">
+								<div className="trailerList_left">
+									<i className="fas fa-play"></i>
+								</div>
+								<div className="trailerList_middle">
+									<i className="fas fa-play"></i>
+								</div>
+								<div className="trailerList_right">
+									<i className="fas fa-play"></i>
+								</div>
 							</div>
-							<div className="trailerList_middle">
-								<i className="fas fa-play"></i>
-							</div>
-							<div className="trailerList_right">
-								<i className="fas fa-play"></i>
-							</div>
-							<div className="castInfo_sidebar"></div>
+
 							<div className="castInfo">
+								<div className="castInfo_sidebar" />
 								<p className="castInfo_title">Starring Cast</p>
 								<p>
 									dhgd, hgdjjf, hgdhgf, dgfhdgf, dgddg, hgdg
@@ -145,7 +158,7 @@ const MovieInfo = () => {
 						</div>
 					</div>
 					<div className="movieInfo--fadeBottom" />
-				</header>
+				</div>
 			)}
 		</div>
 	);

@@ -1,6 +1,5 @@
 import React, { useRef, useState } from 'react';
 import '../styles/Auth.css';
-
 import { useDispatch } from 'react-redux';
 import { login, register as registerAction } from '../actions/userActions';
 import { useEffect } from 'react';
