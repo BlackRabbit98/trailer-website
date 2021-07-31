@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../styles/HomeRow.css';
 import axios from '../axios';
 import { Grow } from '@material-ui/core';
@@ -29,7 +29,7 @@ const HomeRow = ({ title, fetchUrl, type }) => {
 		setShowMovieInfo(false);
 	};
 	const addToList = async (movieId) => {
-		console.log('You clicked add to list');
+		//console.log('You clicked add to list');
 		try {
 			if (user.favMovies.length < Number(user.limit)) {
 				if (!user.favMovies) {
@@ -85,12 +85,12 @@ const HomeRow = ({ title, fetchUrl, type }) => {
 				});
 			}
 		} catch (error) {
-			console.log('Error occured', error);
+			//console.log('Error occured', error);
 		}
 	};
 
 	const subtractFromList = async (movieId) => {
-		console.log('You clicked add to list');
+		//console.log('You clicked add to list');
 		try {
 			if (user.favMovies && user.favMovies.includes(movieId)) {
 				await db
@@ -115,10 +115,10 @@ const HomeRow = ({ title, fetchUrl, type }) => {
 					progress: undefined,
 				});
 			} else {
-				console.log('Not in the list');
+				//console.log('Not in the list');
 			}
 		} catch (error) {
-			console.log('Error occured', error);
+			//console.log('Error occured', error);
 		}
 	};
 

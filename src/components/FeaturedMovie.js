@@ -8,9 +8,14 @@ import requests from '../Requests';
 import InfoIcon from '@material-ui/icons/Info';
 import RectangleButton from './RectangleButton';
 import AddIcon from '@material-ui/icons/Add';
+import RemoveIcon from '@material-ui/icons/Remove';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import Rating from './Rating';
 import MovieInfo from './MovieInfo';
+import { getUserDetails } from '../actions/userActions';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import db from '../utils/firebase';
 
 const FeaturedMovie = () => {
 	const [movies, setMovies] = useState([]);
@@ -18,13 +23,20 @@ const FeaturedMovie = () => {
 	const [playing, setPlaying] = useState(false);
 	const [showMovieInfo, setShowMovieInfo] = useState(false);
 	const [movieData, setMovieData] = useState([]);
+	const dispatch = useDispatch();
 
 	const closeMovieInfoBox = () => {
 		setShowMovieInfo(false);
 	};
 
+	const userLogin = useSelector((state) => state.userLogin);
+	const { userInfo } = userLogin;
+
+	const userDetails = useSelector((state) => state.userDetails);
+	const { user } = userDetails;
+
 	useEffect(() => {
-		//console.log('useEffect 1 running');
+		////console.log('useEffect 1 running');
 		async function fetchData() {
 			const request = await axios.get(requests.fetchNetflixOriginals);
 			const randomNum = Math.floor(
@@ -65,6 +77,100 @@ const FeaturedMovie = () => {
 			return Math.floor(num);
 		} else {
 			return Math.floor(num) + 0.5;
+		}
+	};
+
+	const addToList = async (movieId) => {
+		//console.log('You clicked add to list');
+		try {
+			if (user.favMovies.length < Number(user.limit)) {
+				if (!user.favMovies) {
+					await db
+						.collection('movies')
+						.doc(userInfo.uid)
+						.set({
+							favMovies: [movieId],
+							limit: user.limit || 10,
+						});
+
+					dispatch(getUserDetails());
+
+					toast.success('🥰 Movie added to your list!', {
+						position: 'top-center',
+						autoClose: 2500,
+						hideProgressBar: false,
+						closeOnClick: true,
+						pauseOnHover: true,
+						draggable: true,
+						progress: undefined,
+					});
+				} else if (!user.favMovies?.includes(movieId)) {
+					await db
+						.collection('movies')
+						.doc(userInfo.uid)
+						.set({
+							favMovies: [...user.favMovies, movieId],
+							limit: user.limit || 10,
+						});
+
+					dispatch(getUserDetails());
+
+					toast.success('🥰 Movie added to your list!', {
+						position: 'top-center',
+						autoClose: 2500,
+						hideProgressBar: false,
+						closeOnClick: true,
+						pauseOnHover: true,
+						draggable: true,
+						progress: undefined,
+					});
+				}
+			} else {
+				toast.error('🙏 Upgrade your plan for more!', {
+					position: 'top-center',
+					autoClose: 2500,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+				});
+			}
+		} catch (error) {
+			//console.log('Error occured', error);
+		}
+	};
+
+	const subtractFromList = async (movieId) => {
+		//console.log('You clicked add to list');
+		try {
+			if (user.favMovies && user.favMovies.includes(movieId)) {
+				await db
+					.collection('movies')
+					.doc(userInfo.uid)
+					.set({
+						favMovies: user.favMovies.filter(
+							(item) => item !== movieId
+						),
+						limit: user.limit || 10,
+					});
+
+				dispatch(getUserDetails());
+
+				toast.info('⛔ Movie removed from your list!', {
+					position: 'top-center',
+					autoClose: 2500,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+				});
+			} else {
+				//console.log('Not in the list');
+			}
+		} catch (error) {
+			//console.log('Error occured', error);
 		}
 	};
 
@@ -124,16 +230,44 @@ const FeaturedMovie = () => {
 										title="Play"
 									/>
 								</button>
-								<button className="mylist_button">
-									<RectangleButton
-										Icon={AddIcon}
-										title="My List"
-									/>
-								</button>
+								{user.favMovies ? (
+									user.favMovies.includes(movies?.id) ? (
+										<button
+											onClick={() =>
+												subtractFromList(movies?.id)
+											}
+											className="mylist_button unfav-icon">
+											<RectangleButton
+												Icon={RemoveIcon}
+												title="My List"
+											/>
+										</button>
+									) : (
+										<button
+											onClick={() =>
+												addToList(movies?.id)
+											}
+											className="mylist_button">
+											<RectangleButton
+												Icon={AddIcon}
+												title="My List"
+											/>
+										</button>
+									)
+								) : (
+									<button
+										onClick={() => addToList(movies?.id)}
+										className="mylist_button">
+										<RectangleButton
+											Icon={AddIcon}
+											title="My List"
+										/>
+									</button>
+								)}
 								<InfoIcon
 									className="info_button"
 									onClick={() => {
-										setMovieData(movieData);
+										setMovieData(movies);
 										setShowMovieInfo(true);
 									}}
 								/>

@@ -10,8 +10,24 @@ import { logout } from '../actions/userActions';
 
 export default function Header() {
 	const [showAvatarMenu, setShowAvatarMenu] = useState(false);
+	const [expandSearchMenu, setExpandSearchMenu] = useState(false);
+
+	const [searchQuery, setSearchQuery] = useState('');
+
 	const dispatch = useDispatch();
 	const history = useHistory();
+
+	const searchButtonHandler = (e) => {
+		e.preventDefault();
+		if (searchQuery) {
+			history.push(`/search/${searchQuery}`);
+			setSearchQuery('');
+			setExpandSearchMenu(false);
+		} else {
+			setExpandSearchMenu(true);
+		}
+	};
+
 	return (
 		<div className="header">
 			<div className="header_left">
@@ -55,9 +71,39 @@ export default function Header() {
 				</NavLink>
 			</div>
 			<div className="header_right">
-				<IconButton>
-					<SearchIcon className="search_icon" />
-				</IconButton>
+				<div className="header_right_search">
+					{expandSearchMenu && (
+						<div
+							className="header_right_modal"
+							onClick={(e) => {
+								e.preventDefault();
+								setSearchQuery('');
+								setExpandSearchMenu(false);
+							}}
+						/>
+					)}
+					<input
+						type="text"
+						className={
+							expandSearchMenu
+								? 'header_right_input header_right_input_expand'
+								: 'header_right_input'
+						}
+						value={searchQuery}
+						onChange={(e) => setSearchQuery(e.target.value)}
+						onKeyDown={(e) => {
+							if (e.key === 'Enter') {
+								searchButtonHandler(e);
+							}
+						}}
+					/>
+					<IconButton
+						className="search_icon"
+						onClick={searchButtonHandler}>
+						<SearchIcon />
+					</IconButton>
+				</div>
+
 				<div className="avatarmenu_parent">
 					{showAvatarMenu && (
 						<>

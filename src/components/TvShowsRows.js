@@ -33,7 +33,7 @@ const TvShowsRows = ({ title, fetchUrl, type }) => {
 	};
 
 	const addToList = async (movieId) => {
-		console.log('You clicked add to list');
+		//console.log('You clicked add to list');
 		try {
 			if (user.favMovies.length < Number(user.limit)) {
 				if (!user.favMovies) {
@@ -89,12 +89,12 @@ const TvShowsRows = ({ title, fetchUrl, type }) => {
 				});
 			}
 		} catch (error) {
-			console.log('Error occured', error);
+			//console.log('Error occured', error);
 		}
 	};
 
 	const subtractFromList = async (movieId) => {
-		console.log('You clicked add to list');
+		//console.log('You clicked add to list');
 		try {
 			if (user.favMovies && user.favMovies.includes(movieId)) {
 				await db
@@ -119,10 +119,10 @@ const TvShowsRows = ({ title, fetchUrl, type }) => {
 					progress: undefined,
 				});
 			} else {
-				console.log('Not in the list');
+				//console.log('Not in the list');
 			}
 		} catch (error) {
-			console.log('Error occured', error);
+			//console.log('Error occured', error);
 		}
 	};
 
@@ -167,7 +167,7 @@ const TvShowsRows = ({ title, fetchUrl, type }) => {
 		async function fetchData() {
 			const request = await axios.get(fetchUrl);
 			setMovies([...request.data.results]);
-			console.log('MovieData: ', request.data.results);
+			//console.log('MovieData: ', request.data.results);
 			return request;
 		}
 		fetchData();
@@ -176,6 +176,7 @@ const TvShowsRows = ({ title, fetchUrl, type }) => {
 	const RowImage = ({
 		imgSource = 'https://omegamma.com.au/wp-content/uploads/2017/04/default-image-620x600.jpg',
 		id,
+		indexVal,
 	}) => (
 		<div className="imageBox">
 			<img className="RowImage" src={imgSource} alt="" />
@@ -203,7 +204,12 @@ const TvShowsRows = ({ title, fetchUrl, type }) => {
 						</div>
 					)}
 					<div>
-						<i className="fas fa-info-circle"></i>
+						<i
+							onClick={() => {
+								setMovieData(movies[indexVal]);
+								setShowMovieInfo(true);
+							}}
+							className="fas fa-info-circle"></i>
 					</div>
 				</div>
 			</div>
@@ -223,13 +229,6 @@ const TvShowsRows = ({ title, fetchUrl, type }) => {
 				</Grow>
 			)}
 
-			{showMovieInfo && (
-				<MovieInfo
-					movies={movieData}
-					closeMovieInfoHandler={closeMovieInfoBox}
-				/>
-			)}
-
 			<div className="leftRowPosters">
 				<div className="leftRowPosters__top">
 					<RowImage
@@ -237,18 +236,21 @@ const TvShowsRows = ({ title, fetchUrl, type }) => {
 							movies[start + 0]?.poster_path
 						}`}
 						id={movies[start + 0]?.id}
+						indexVal={start + 0}
 					/>
 					<RowImage
 						imgSource={`${baseUrl}${
 							movies[start + 1]?.poster_path
 						}`}
 						id={movies[start + 1]?.id}
+						indexVal={start + 1}
 					/>
 					<RowImage
 						imgSource={`${baseUrl}${
 							movies[start + 2]?.poster_path
 						}`}
 						id={movies[start + 2]?.id}
+						indexVal={start + 2}
 					/>
 				</div>
 				<div className="leftRowPosters__bottom">
@@ -257,18 +259,21 @@ const TvShowsRows = ({ title, fetchUrl, type }) => {
 							movies[start + 3]?.poster_path
 						}`}
 						id={movies[start + 3]?.id}
+						indexVal={start + 3}
 					/>
 					<RowImage
 						imgSource={`${baseUrl}${
 							movies[start + 4]?.poster_path
 						}`}
 						id={movies[start + 4]?.id}
+						indexVal={start + 4}
 					/>
 					<RowImage
 						imgSource={`${baseUrl}${
 							movies[start + 5]?.poster_path
 						}`}
 						id={movies[start + 5]?.id}
+						indexVal={start + 5}
 					/>
 				</div>
 			</div>
@@ -310,7 +315,7 @@ const TvShowsRows = ({ title, fetchUrl, type }) => {
 						)}
 						<div
 							onClick={() => {
-								setMovieData(movieData);
+								setMovieData(movies[start + 6]);
 								setShowMovieInfo(true);
 							}}>
 							<i className="fas fa-info-circle"></i>
@@ -320,9 +325,17 @@ const TvShowsRows = ({ title, fetchUrl, type }) => {
 			</div>
 		</div>
 	);
+	console.log(movies[0]);
 
 	return (
-		<div className="tvShowsRow">
+		<div className="tvShowsRow" id={title}>
+			{showMovieInfo && (
+				<MovieInfo
+					movie={movieData}
+					closeMovieInfoHandler={closeMovieInfoBox}
+					tv={true}
+				/>
+			)}
 			<p>{title}</p>
 			<div className="tvShowsRowImages">
 				{movies && <TvShowRowStructure start={0} />}

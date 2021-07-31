@@ -7,6 +7,7 @@
 	flex-direction: column;
 	align-items: flex-start;
 	margin-bottom: 45px;
+	overflow-x: scroll;
 }
 
 .homeRow > h2 {
@@ -42,7 +43,7 @@
 	display: flex;
 	justify-content: space-around;
 	height: 100%;
-	width: 100%;
+	min-width: 100%;
 	background: radial-gradient(
 		76.27% 76.27% at 53.32% 100%,
 		#000000 0%,
@@ -55,6 +56,8 @@
 	margin-top: auto;
 	margin-bottom: 20px;
 	display: flex;
+	justify-content: space-evenly;
+	width: 100%;
 }
 .imageBackdropButtons > div {
 	margin: 0;
@@ -66,7 +69,6 @@
 	);
 	color: white;
 	border: none;
-	margin-right: 18px;
 	border-radius: 100%;
 	padding: 12px;
 	text-align: center;
@@ -86,4 +88,18 @@
 }
 .imageBox:hover .RowImage {
 	transform: scale(1.1);
+}
+
+@media only screen and (max-width: 600px) {
+	.RowImage {
+		height: 220px;
+	}
+
+	.imageBackdropButtons > div > i {
+		font-size: 14px;
+	}
+
+	.imageBackdropButtons > div {
+		padding: 6px;
+	}
 }

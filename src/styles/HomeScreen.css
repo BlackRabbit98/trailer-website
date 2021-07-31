@@ -12,8 +12,14 @@
 	align-items: flex-start;
 }
 
-@media only screen and (max-height: 600px) {
+@media only screen and (max-height: 1080px) {
 	.homeScreen_rows {
 		margin-top: 80vh;
+	}
+}
+
+@media only screen and (max-height: 800px) {
+	.homeScreen_rows {
+		margin-top: 65vh;
 	}
 }

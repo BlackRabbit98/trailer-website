@@ -18,14 +18,14 @@ import {
 import db, { auth } from '../utils/firebase';
 
 const createUserDetails = async (userId) => {
-	console.log('Creating first time user details');
+	//console.log('Creating first time user details');
 	try {
 		const createDetails = await db.collection('movies').doc(userId).set({
 			favMovies: [],
 			limit: 10,
 		});
 
-		console.log('Successfully created user details', createDetails);
+		//console.log('Successfully created user details', createDetails);
 	} catch (error) {
 		console.error('Error writing document: ', error);
 	}
@@ -39,10 +39,10 @@ export const login = (email, password) => async (dispatch) => {
 
 		const { user } = await auth.signInWithEmailAndPassword(email, password);
 
-		console.log('user', user);
+		//console.log('user', user);
 
 		// .then((authUser) => {
-		// 	console.log('Signed up User Details: ', authUser);
+		// 	//console.log('Signed up User Details: ', authUser);
 		// })
 		// .catch((error) => {
 		// 	alert(error.message);
@@ -119,7 +119,7 @@ export const register = (email, password) => async (dispatch) => {
 
 		localStorage.setItem('userInfo', JSON.stringify(user));
 	} catch (error) {
-		console.log(error);
+		//console.log(error);
 
 		if (error.code === 'auth/email-already-in-use') {
 			dispatch({

@@ -2,7 +2,7 @@
 	display: flex;
 	flex-direction: column;
 	overflow-x: scroll;
-	margin-top: 30px;
+	padding-top: 130px;
 	margin-left: 20px;
 }
 
@@ -89,4 +89,18 @@
 
 .unfav-icon {
 	background: rgb(255, 157, 0) !important;
+}
+
+@media only screen and (max-width: 800px) {
+	.rightRowPosters > img {
+		height: 460px !important;
+	}
+
+	.rightRow_imageBackdropButtons > div {
+		padding: 14px !important;
+	}
+
+	.rightRow_imageBackdropButtons > div > i {
+		font-size: 18px;
+	}
 }

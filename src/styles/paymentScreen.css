@@ -1,0 +1,15 @@
+.payment_container {
+	min-height: 100vh;
+	display: flex;
+	justify-content: center;
+	background: rgb(185, 244, 252);
+}
+.payment_main {
+	margin-top: 10vh;
+	display: flex;
+	flex-direction: column;
+	height: max-content;
+	min-width: 350px;
+	background: white;
+	padding: 12px 20px;
+}

@@ -2,11 +2,11 @@ import React from 'react';
 import { useRef } from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { logout } from '../actions/userActions';
+import { getUserDetails, logout } from '../actions/userActions';
 import '../styles/ProfileScreen.css';
-import { auth } from '../utils/firebase';
+import db, { auth } from '../utils/firebase';
 
 const ProfileScreen = () => {
 	const [displayName, setDisplayName] = useState('');
@@ -19,21 +19,39 @@ const ProfileScreen = () => {
 	const [type, setType] = useState('');
 	const [showPopup, setShowPopup] = useState(false);
 
+	const userLogin = useSelector((state) => state.userLogin);
+	const { userInfo } = userLogin;
+
+	const userDetails = useSelector((state) => state.userDetails);
+	const { user } = userDetails;
+
 	const dispatch = useDispatch();
 	const history = useHistory();
 
 	useEffect(() => {
+		dispatch(getUserDetails());
 		const user = auth.currentUser;
 		if (user) {
 			setDisplayName(user.displayName);
 			setEmail(user.email);
 			setPhotoURL(user.photoURL);
 		}
-		console.log(user);
+		//console.log(user);
 		return () => {
 			//cleanup
 		};
-	}, []);
+	}, [dispatch]);
+
+	const downgradeToBasic = async () => {
+		await db
+			.collection('movies')
+			.doc(userInfo.uid)
+			.set({
+				favMovies: [...user.favMovies],
+				limit: 10,
+			});
+		dispatch(getUserDetails());
+	};
 
 	const updateUsername = () => {
 		const user = auth.currentUser;
@@ -43,11 +61,11 @@ const ProfileScreen = () => {
 		})
 			.then(() => {
 				// Update successful
-				console.log('Update successful');
+				//console.log('Update successful');
 			})
 			.catch((error) => {
 				// An error occurred
-				console.log('Error Occured', error);
+				//console.log('Error Occured', error);
 			});
 	};
 
@@ -59,11 +77,11 @@ const ProfileScreen = () => {
 		})
 			.then(() => {
 				// Update successful
-				console.log('Update successful');
+				//console.log('Update successful');
 			})
 			.catch((error) => {
 				// An error occurred
-				console.log('Error Occured', error);
+				//console.log('Error Occured', error);
 			});
 	};
 
@@ -73,11 +91,11 @@ const ProfileScreen = () => {
 		user.updateEmail(val)
 			.then(() => {
 				// Update successful
-				console.log('Update successful');
+				//console.log('Update successful');
 			})
 			.catch((error) => {
 				// An error occurred
-				console.log('Error Occured', error);
+				//console.log('Error Occured', error);
 			});
 	};
 
@@ -89,17 +107,17 @@ const ProfileScreen = () => {
 		})
 			.then(() => {
 				// Update successful
-				console.log('Update successful');
+				//console.log('Update successful');
 			})
 			.catch((error) => {
 				// An error occurred
-				console.log('Error Occured', error);
+				//console.log('Error Occured', error);
 			});
 	};
 
 	const ChangeDataPopupSubmitHandler = (e) => {
 		e.preventDefault();
-		console.log(updateValRef.current.value);
+		//console.log(updateValRef.current.value);
 		if (type === 'Email') {
 			updateUserEmail(updateValRef.current.value);
 		}
@@ -213,8 +231,15 @@ const ProfileScreen = () => {
 								<p className="middleText1">10 mylist items</p>
 								<p>Unlimited Trailers</p>
 								<p className="buttomText">Free</p>
-								<button className="featuresButton1">
-									Active Plan
+								<button
+									className={`featuresButton ${
+										user.limit === 10 &&
+										'featurebuttonActive'
+									}`}
+									onClick={downgradeToBasic}>
+									{user.limit === 10
+										? 'Active Plan'
+										: 'Downgrade Plan'}
 								</button>
 							</div>
 
@@ -224,8 +249,19 @@ const ProfileScreen = () => {
 								<p>Unlimited Trailers</p>
 								<p>Email notifications</p>
 								<p className="buttomText">$50/year</p>
-								<button className="featuresButton2">
-									Upgrade Plan
+								<button
+									className={`featuresButton ${
+										user.limit === 50 &&
+										'featurebuttonActive'
+									}`}
+									onClick={() =>
+										history.push('/payment/value')
+									}>
+									{user.limit === 50
+										? 'Active Plan'
+										: user.limit === 10
+										? 'Upgrade Plan'
+										: 'Downgrade Plan'}
 								</button>
 							</div>
 
@@ -237,8 +273,17 @@ const ProfileScreen = () => {
 								<p>Unlimited Trailers</p>
 								<p>Email notifications</p>
 								<p className="buttomText">$100/year</p>
-								<button className="featuresButton3">
-									Upgrade Plan
+								<button
+									className={`featuresButton ${
+										user.limit === 1000 &&
+										'featurebuttonActive'
+									}`}
+									onClick={() =>
+										history.push('/payment/pro')
+									}>
+									{user.limit === 1000
+										? 'Active Plan'
+										: 'Upgrade Plan'}
 								</button>
 							</div>
 						</div>

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import '../styles/Auth.css';
 import { useDispatch } from 'react-redux';
 import { login, register as registerAction } from '../actions/userActions';
@@ -45,7 +45,7 @@ function SignUpScreen({ loginHandler, isSignup = false, getStartedEmail }) {
 			passwordValidation === null &&
 			email !== ''
 		) {
-			console.log('Calling API');
+			//console.log('Calling API');
 			signUp ? register(e) : signIn(e);
 		}
 	};
@@ -101,12 +101,12 @@ function SignUpScreen({ loginHandler, isSignup = false, getStartedEmail }) {
 				.then(() => {
 					// Password reset email sent!
 					// ..
-					console.log('email sent');
+					//console.log('email sent');
 				})
 				.catch((error) => {
 					const errorCode = error.code;
 					const errorMessage = error.message;
-					console.log(errorCode, errorMessage);
+					//console.log(errorCode, errorMessage);
 					// ..
 				});
 		}

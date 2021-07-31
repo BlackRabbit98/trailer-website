@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import axios from '../axios';
 import { Grow } from '@material-ui/core';
 import ModalVideo from 'react-modal-video';
@@ -10,12 +11,9 @@ import { toast } from 'react-toastify';
 import db from '../utils/firebase';
 import MovieInfo from '../components/MovieInfo';
 import '../styles/SearchScreen.css';
-import '../styles/MovieScreen.css';
-import requests from '../Requests';
-import '../styles/NewScreen.css';
 
-const NewScreen = () => {
-	// https://api.themoviedb.org/3/movie/upcoming?api_key=<<api_key>>&language=en-US&page=1
+const SearchScreen = () => {
+	const { query } = useParams();
 	const [loading, setLoading] = useState(false);
 	const [searchResults, setSearchResults] = useState([]);
 	const [showMovieInfo, setShowMovieInfo] = useState(false);
@@ -34,10 +32,11 @@ const NewScreen = () => {
 	const API_KEY = 'c7eb936e1918da481517817655a9e9db';
 
 	useEffect(() => {
-		setLoading(true);
 		async function searchMovies() {
 			try {
-				const requested = await axios.get(requests.fetchNewMovie);
+				const requested = await axios.get(
+					`search/movie?api_key=${API_KEY}&query=${query}`
+				);
 				setSearchResults([...requested.data?.results]);
 				//console.log('Results', requested.data?.results);
 				setLoading(false);
@@ -48,8 +47,7 @@ const NewScreen = () => {
 			}
 		}
 		searchMovies();
-		//eslint-disable-next-line
-	}, []);
+	}, [query]);
 
 	const trailer = async (id) => {
 		setPlaying(false);
@@ -176,72 +174,68 @@ const NewScreen = () => {
 	}, [videoId]);
 
 	return (
-		<div className="movieScreenContainer">
-			<div className="search_resultsContainer">
-				{videoId && playing && videoId.site === 'YouTube' && (
-					<Grow in={playing} mountOnEnter unmountOnExit>
-						<ModalVideo
-							channel="youtube"
-							isOpen="true"
-							videoId={videoId.key}
-							onClose={() => setPlaying(false)}
-						/>
-					</Grow>
-				)}
-
-				{showMovieInfo && (
-					<MovieInfo
-						movie={movieData}
-						closeMovieInfoHandler={closeMovieInfoBox}
+		<div className="search_resultsContainer">
+			{videoId && playing && videoId.site === 'YouTube' && (
+				<Grow in={playing} mountOnEnter unmountOnExit>
+					<ModalVideo
+						channel="youtube"
+						isOpen="true"
+						videoId={videoId.key}
+						onClose={() => setPlaying(false)}
 					/>
-				)}
+				</Grow>
+			)}
 
-				{!loading && searchResults.length > 0 ? (
-					<>
-						<div className="search_results_main new_page">
-							{searchResults?.map(
-								(movie, idx) =>
-									movie.poster_path && (
-										<div
-											className="imageBox searchImageBox"
-											key={idx}>
-											<img
-												loading="lazy"
-												className="RowImage search_resultsImage"
-												src={`${baseUrl}${movie.poster_path}`}
-												alt={movie.name}
-											/>
-											<div className="imageBackdrop">
-												<div className="imageBackdropButtons">
-													<div
-														onClick={() =>
-															trailer(movie?.id)
-														}>
-														<i className="fas fa-play"></i>
-													</div>
-													{user.favMovies ? (
-														user.favMovies.includes(
-															movie?.id
-														) ? (
-															<div
-																className="unfav-icon"
-																onClick={() =>
-																	subtractFromList(
-																		movie?.id
-																	)
-																}>
-																<i className="fas fa-minus"></i>
-															</div>
-														) : (
-															<div
-																onClick={() =>
-																	addToList(
-																		movie?.id
-																	)
-																}>
-																<i className="fas fa-plus"></i>
-															</div>
-														)
+			{showMovieInfo && (
+				<MovieInfo
+					movie={movieData}
+					closeMovieInfoHandler={closeMovieInfoBox}
+				/>
+			)}
+
+			{loading ? (
+				<p>Loading...</p>
+			) : searchResults.length > 0 ? (
+				<>
+					<div className="search_results_text">
+						<p>
+							Search Results for <span>{query}</span>
+						</p>
+					</div>
+					<div className="search_results_main">
+						{searchResults?.map(
+							(movie, idx) =>
+								movie.poster_path && (
+									<div
+										className="imageBox searchImageBox"
+										key={idx}>
+										<img
+											loading="lazy"
+											className="RowImage search_resultsImage"
+											src={`${baseUrl}${movie.poster_path}`}
+											alt={movie.name}
+										/>
+										<div className="imageBackdrop">
+											<div className="imageBackdropButtons">
+												<div
+													onClick={() =>
+														trailer(movie?.id)
+													}>
+													<i className="fas fa-play"></i>
+												</div>
+												{user.favMovies ? (
+													user.favMovies.includes(
+														movie?.id
+													) ? (
+														<div
+															className="unfav-icon"
+															onClick={() =>
+																subtractFromList(
+																	movie?.id
+																)
+															}>
+															<i className="fas fa-minus"></i>
+														</div>
 													) : (
 														<div
 															onClick={() =>
@@ -251,29 +245,38 @@ const NewScreen = () => {
 															}>
 															<i className="fas fa-plus"></i>
 														</div>
-													)}
+													)
+												) : (
 													<div
-														onClick={() => {
-															setMovieData(movie);
-															setShowMovieInfo(
-																true
-															);
-														}}>
-														<i className="fas fa-info-circle"></i>
+														onClick={() =>
+															addToList(movie?.id)
+														}>
+														<i className="fas fa-plus"></i>
 													</div>
+												)}
+												<div
+													onClick={() => {
+														setMovieData(movie);
+														setShowMovieInfo(true);
+													}}>
+													<i className="fas fa-info-circle"></i>
 												</div>
 											</div>
 										</div>
-									)
-							)}
-						</div>
-					</>
-				) : (
-					<p>Loading...</p>
-				)}
-			</div>
+									</div>
+								)
+						)}
+					</div>
+				</>
+			) : (
+				<div className="empty_searchResults">
+					<i className="fas fa-search"></i>
+					<p>Sorry, no results found :(</p>
+					<p>We can't find any trailers matching your search</p>
+				</div>
+			)}
 		</div>
 	);
 };
 
-export default NewScreen;
+export default SearchScreen;

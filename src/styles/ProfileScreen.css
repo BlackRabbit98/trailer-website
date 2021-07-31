@@ -130,6 +130,7 @@
 	width: 500px;
 	height: 600px;
 	margin-left: 30px;
+	padding-bottom: 200px;
 }
 
 .profileScreen_middleTop > h1,
@@ -224,10 +225,8 @@
 	color: white;
 }
 
-.featuresButton1,
-.featuresButton2,
-.featuresButton3 {
-	width: 100px;
+.featuresButton {
+	width: 120px;
 	height: 35px;
 	background: linear-gradient(
 		263.41deg,
@@ -240,6 +239,14 @@
 	margin-top: 0.5em;
 	margin-bottom: 2.2em;
 	cursor: pointer;
+}
+
+.featurebuttonActive {
+	background: linear-gradient(
+		263.41deg,
+		rgb(0, 153, 255) 0%,
+		rgb(162, 0, 255) 100%
+	);
 }
 
 .middleText1 {

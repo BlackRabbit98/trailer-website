@@ -29,7 +29,6 @@
 
 .rightRowPosters {
 	display: flex;
-	min-width: 500px;
 }
 
 .rightRowPosters > img {
@@ -37,5 +36,3 @@
 	border-radius: 40px;
 	object-fit: contain;
 }
-
-

@@ -15,10 +15,10 @@
 	max-width: 100px;
 	cursor: pointer;
 	margin-left: 20px;
-	margin-top: 100px;
+	margin-top: 80px;
 	background: linear-gradient(
 		263.41deg,
-		rgba(1, 141, 185, 0.71) 0%,
+		rgba(1, 141, 185, 1) 0%,
 		#02ffd1 100%
 	);
 	border-radius: 5px;
@@ -26,3 +26,33 @@
 	border: none;
 	outline: none;
 }
+
+.tvShows__genreSelector {
+	position: fixed;
+	z-index: 999;
+}
+
+.tvShows__genres {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	position: absolute;
+	left: 130px;
+	bottom: -25px;
+	color: white;
+	width: 150px;
+	background: rgba(0, 0, 0, 0.925);
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+	border-radius: 10px;
+	padding: 10px 10px;
+}
+
+.tvShows__genres > p {
+	cursor: pointer;
+}
+
+.tvShows__genres > p:hover {
+	color: #02ffd1;
+}
+
+

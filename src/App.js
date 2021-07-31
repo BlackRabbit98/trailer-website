@@ -1,5 +1,4 @@
 import './App.css';
-import MovieInfo from './components/MovieInfo';
 import HomeScreen from './screens/HomeScreen';
 import TvShowsScreen from './screens/TvShowsScreen';
 import MoviesScreen from './screens/MoviesScreen';
@@ -12,13 +11,15 @@ import ProfileScreen from './screens/ProfileScreen';
 import { useDispatch } from 'react-redux';
 import { getUserDetails, logout } from './actions/userActions';
 import { useEffect } from 'react';
-import db, { auth } from './utils/firebase';
+import { auth } from './utils/firebase';
 import { useState } from 'react';
 import { USER_LOGIN_SUCCESS } from './constants/userConstants';
 import { useSelector } from 'react-redux';
 import LoadingScreen from './components/LoadingScreen';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import SearchScreen from './screens/SearchScreen';
+import PaymentScreen from './screens/PaymentScreen';
 
 function App() {
 	const dispatch = useDispatch();
@@ -32,7 +33,7 @@ function App() {
 		const persistLogin = auth.onAuthStateChanged((user) => {
 			if (user) {
 				setLoading(false);
-				console.log('user', user);
+				//console.log('user', user);
 
 				dispatch({
 					type: USER_LOGIN_SUCCESS,
@@ -76,6 +77,9 @@ function App() {
 							<Route exact path="/tvshows">
 								<TvShowsScreen />
 							</Route>
+							<Route exact path="/search/:query">
+								<SearchScreen />
+							</Route>
 							<Route exact path="/movies">
 								<MoviesScreen />
 							</Route>
@@ -87,6 +91,9 @@ function App() {
 							</Route>
 							<Route exact path="/myaccount">
 								<ProfileScreen />
+							</Route>
+							<Route exact path="/payment/:type">
+								<PaymentScreen />
 							</Route>
 						</Switch>
 					</>

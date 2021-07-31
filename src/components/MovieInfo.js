@@ -4,43 +4,74 @@ import { useEffect, useState } from 'react';
 import '../styles/MovieInfo.css';
 import { Grow } from '@material-ui/core';
 import ModalVideo from 'react-modal-video';
-import requests from '../Requests';
 import RectangleButton from './RectangleButton';
 import AddIcon from '@material-ui/icons/Add';
+import RemoveIcon from '@material-ui/icons/Remove';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import Rating from './Rating';
+import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
+import db from '../utils/firebase';
+import { getUserDetails } from '../actions/userActions';
 
-const MovieInfo = ({ movie: movies, closeMovieInfoHandler }) => {
-	const [movie, setMovie] = useState([]);
+const MovieInfo = ({ movie: movies, closeMovieInfoHandler, tv = false }) => {
+	const [movieTrailers, setMovieTrailers] = useState([]);
 	const [videoId, setVideoId] = useState([]);
 	const [playing, setPlaying] = useState(false);
+	const dispatch = useDispatch();
 
-	console.log('movie:', movie);
-	useEffect(() => {
-		//console.log('useEffect 1 running');
-		async function fetchData() {
-			const request = await axios.get(requests.fetchNetflixOriginals);
-			const randomNum = Math.floor(
-				Math.random() * (request.data.results.length - 1)
-			);
-			setMovie(request.data.results[randomNum || 0]);
-			return request;
-		}
-		fetchData();
-	}, []);
+	const userLogin = useSelector((state) => state.userLogin);
+	const { userInfo } = userLogin;
+
+	const userDetails = useSelector((state) => state.userDetails);
+	const { user } = userDetails;
 
 	const API_KEY = 'c7eb936e1918da481517817655a9e9db';
+	//console.log(movies);
+	useEffect(() => {
+		////console.log('useEffect 1 running');
+		console.log(movies);
+		async function fetchData() {
+			try {
+				if (tv) {
+					const { data } = await axios.get(
+						`/tv/${movies.id}/videos?api_key=${API_KEY}&append_to_response=videos`
+					);
+					//console.log(data);
+					setMovieTrailers(data.results);
+					return data;
+				} else {
+					const { data } = await axios.get(
+						`/movie/${movies.id}/videos?api_key=${API_KEY}&append_to_response=videos`
+					);
+					if (data.results.length < 1) {
+						const { data } = await axios.get(
+							`/tv/${movies.id}/videos?api_key=${API_KEY}&append_to_response=videos`
+						);
+						//console.log(data);
+						setMovieTrailers(data.results);
+						return data;
+					} else {
+						//console.log(data);
+						setMovieTrailers(data.results);
+						return data;
+					}
+				}
+			} catch (error) {
+				const { data } = await axios.get(
+					`/tv/${movies.id}/videos?api_key=${API_KEY}&append_to_response=videos`
+				);
+				//console.log(data);
+				setMovieTrailers(data.results);
+				return data;
+			}
+		}
+		fetchData();
+	}, [movies, tv]);
 
 	const trailer = async (id) => {
 		setPlaying(false);
-		async function playTrailer(id) {
-			const requested = await axios.get(
-				`/tv/${id}/videos?api_key=${API_KEY}&append_to_response=videos`
-			);
-			setVideoId(requested.data?.results[0]);
-			return requested;
-		}
-		playTrailer(id);
+		setVideoId(id);
 	};
 
 	useEffect(() => {
@@ -61,15 +92,103 @@ const MovieInfo = ({ movie: movies, closeMovieInfoHandler }) => {
 		}
 	};
 
+	const addToList = async (movieId) => {
+		//console.log('You clicked add to list');
+		try {
+			if (user.favMovies.length < Number(user.limit)) {
+				if (!user.favMovies) {
+					await db
+						.collection('movies')
+						.doc(userInfo.uid)
+						.set({
+							favMovies: [movieId],
+							limit: user.limit || 10,
+						});
+
+					dispatch(getUserDetails());
+
+					toast.success('🥰 Movie added to your list!', {
+						position: 'top-center',
+						autoClose: 2500,
+						hideProgressBar: false,
+						closeOnClick: true,
+						pauseOnHover: true,
+						draggable: true,
+						progress: undefined,
+					});
+				} else if (!user.favMovies?.includes(movieId)) {
+					await db
+						.collection('movies')
+						.doc(userInfo.uid)
+						.set({
+							favMovies: [...user.favMovies, movieId],
+							limit: user.limit || 10,
+						});
+
+					dispatch(getUserDetails());
+
+					toast.success('🥰 Movie added to your list!', {
+						position: 'top-center',
+						autoClose: 2500,
+						hideProgressBar: false,
+						closeOnClick: true,
+						pauseOnHover: true,
+						draggable: true,
+						progress: undefined,
+					});
+				}
+			} else {
+				toast.error('🙏 Upgrade your plan for more!', {
+					position: 'top-center',
+					autoClose: 2500,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+				});
+			}
+		} catch (error) {
+			//console.log('Error occured', error);
+		}
+	};
+
+	const subtractFromList = async (movieId) => {
+		//console.log('You clicked add to list');
+		try {
+			if (user.favMovies && user.favMovies.includes(movieId)) {
+				await db
+					.collection('movies')
+					.doc(userInfo.uid)
+					.set({
+						favMovies: user.favMovies.filter(
+							(item) => item !== movieId
+						),
+						limit: user.limit || 10,
+					});
+
+				dispatch(getUserDetails());
+
+				toast.info('⛔ Movie removed from your list!', {
+					position: 'top-center',
+					autoClose: 2500,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+				});
+			} else {
+				//console.log('Not in the list');
+			}
+		} catch (error) {
+			//console.log('Error occured', error);
+		}
+	};
+
 	return (
 		<div className="movieInfo__containerMain">
 			<div className="movieInfo__modal" />
-
-			<button
-				className="movieInfo__cancel"
-				onClick={() => closeMovieInfoHandler()}>
-				<i className="fas fa-times"></i>
-			</button>
 
 			{videoId && playing && videoId.site === 'YouTube' && (
 				<Grow in={playing} mountOnEnter unmountOnExit>
@@ -82,7 +201,7 @@ const MovieInfo = ({ movie: movies, closeMovieInfoHandler }) => {
 				</Grow>
 			)}
 
-			{movie && movie.backdrop_path && (
+			{movies && movies.backdrop_path && (
 				<div
 					className="movieInfo_container"
 					style={{
@@ -90,7 +209,13 @@ const MovieInfo = ({ movie: movies, closeMovieInfoHandler }) => {
 						backgroundImage: `url("https://image.tmdb.org/t/p/original/${movies?.backdrop_path}")`,
 						backgroundPosition: 'top',
 						backgroundRepeat: 'no-repeat',
+						borderRadius: '50px',
 					}}>
+					<button
+						className="movieInfo__cancel"
+						onClick={() => closeMovieInfoHandler()}>
+						<i className="fas fa-times"></i>
+					</button>
 					<div className="movieInfo_contentsContainer">
 						<div className="movieInfo_contents">
 							<p className="movieInfo_title">
@@ -111,19 +236,47 @@ const MovieInfo = ({ movie: movies, closeMovieInfoHandler }) => {
 							</div>
 							<div className="movieInfo_buttons">
 								<button
-									onClick={() => trailer(movies.id)}
+									onClick={() => trailer(movieTrailers[0])}
 									className="play_button">
 									<RectangleButton
 										Icon={PlayArrowIcon}
 										title="Play"
 									/>
 								</button>
-								<button className="mylist_button">
-									<RectangleButton
-										Icon={AddIcon}
-										title="My List"
-									/>
-								</button>
+								{user.favMovies ? (
+									user.favMovies.includes(movies?.id) ? (
+										<button
+											onClick={() =>
+												subtractFromList(movies?.id)
+											}
+											className="mylist_button unfav-icon">
+											<RectangleButton
+												Icon={RemoveIcon}
+												title="My List"
+											/>
+										</button>
+									) : (
+										<button
+											onClick={() =>
+												addToList(movies?.id)
+											}
+											className="mylist_button">
+											<RectangleButton
+												Icon={AddIcon}
+												title="My List"
+											/>
+										</button>
+									)
+								) : (
+									<button
+										onClick={() => addToList(movies?.id)}
+										className="mylist_button">
+										<RectangleButton
+											Icon={AddIcon}
+											title="My List"
+										/>
+									</button>
+								)}
 							</div>
 							<div className="directorInfo">
 								<p>
@@ -136,23 +289,44 @@ const MovieInfo = ({ movie: movies, closeMovieInfoHandler }) => {
 
 						<div className="bottomContents">
 							<div className="trailersList">
-								<div className="trailerList_left">
-									<i className="fas fa-play"></i>
-								</div>
-								<div className="trailerList_middle">
-									<i className="fas fa-play"></i>
-								</div>
-								<div className="trailerList_right">
-									<i className="fas fa-play"></i>
-								</div>
+								{movieTrailers.map((tr, idx) => {
+									if (idx > 2) return null;
+									return (
+										<div
+											className="trailerList_left"
+											onClick={() => trailer(tr)}>
+											<img
+												src={`https://img.youtube.com/vi/${tr.key}/mqdefault.jpg
+`}
+												alt=""
+											/>
+											<i className="fas fa-play"></i>
+										</div>
+									);
+								})}
+								{movieTrailers.length < 1 && (
+									<div
+										className="trailerList_left"
+										onClick={() =>
+											trailer({
+												site: 'YouTube',
+												key: 'LMlCN6_vUvs',
+											})
+										}>
+										<img
+											src="https://img.youtube.com/vi/LMlCN6_vUvs/mqdefault.jpg"
+											alt=""
+										/>
+										<i className="fas fa-play"></i>
+									</div>
+								)}
 							</div>
 
 							<div className="castInfo">
 								<div className="castInfo_sidebar" />
 								<p className="castInfo_title">Starring Cast</p>
 								<p>
-									dhgd, hgdjjf, hgdhgf, dgfhdgf, dgddg, hgdg
-									dhgd, hgdjjf, hgdhgf, dgfhdgf, dgddg, hgdg
+									Casts coming soon! Please check back again.
 								</p>
 							</div>
 						</div>
