@@ -108,18 +108,7 @@ const IndividualMovie = ({
 	}, [videoId]);
 
 	return (
-		<div className="myList_row">
-			{videoId && playing && videoId.site === 'YouTube' && (
-				<Grow in={playing} mountOnEnter unmountOnExit>
-					<ModalVideo
-						channel="youtube"
-						isOpen="true"
-						videoId={videoId.key}
-						onClose={() => setPlaying(false)}
-					/>
-				</Grow>
-			)}
-
+		<>
 			{showMovieDetails && (
 				<div
 					onClick={(e) => {
@@ -131,37 +120,55 @@ const IndividualMovie = ({
 					className="myList_row_modal"
 				/>
 			)}
-			<img
-				className={`myList_img ${showMovieDetails && 'big-poster-img'}`}
-				onClick={() => setShowMovieDetails(!showMovieDetails)}
-				src={src}
-				alt=""
-			/>
+			<div className="myList_row">
+				{videoId && playing && videoId.site === 'YouTube' && (
+					<Grow in={playing} mountOnEnter unmountOnExit>
+						<ModalVideo
+							channel="youtube"
+							isOpen="true"
+							videoId={videoId.key}
+							onClose={() => setPlaying(false)}
+						/>
+					</Grow>
+				)}
 
-			{showMovieDetails && (
-				<div className="myList_rowEffects">
-					<h2>
-						{title} ({year})
-					</h2>
-					<p>{truncate(`${description}`, 150)}</p>
-					<Rating value={rating} text={`${numMod(rating)} stars`} />
-					<div className="rowEffects_button">
-						<button onClick={() => trailer(id)}>
-							<i className="fas fa-play"></i>Play
-						</button>
-						<button onClick={() => showInfo()}>
-							<i className="fas fa-info-circle"></i>
-							Info
-						</button>
-						<button
-							className="unfav-icon"
-							onClick={() => subtractFromList(id)}>
-							<i className="fas fa-minus"></i>Remove
-						</button>
+				<img
+					className={`myList_img ${
+						showMovieDetails && 'big-poster-img'
+					}`}
+					onClick={() => setShowMovieDetails(!showMovieDetails)}
+					src={src}
+					alt=""
+				/>
+
+				{showMovieDetails && (
+					<div className="myList_rowEffects">
+						<h2>
+							{title} ({year})
+						</h2>
+						<p>{truncate(`${description}`, 150)}</p>
+						<Rating
+							value={rating}
+							text={`${numMod(rating)} stars`}
+						/>
+						<div className="rowEffects_button">
+							<button onClick={() => trailer(id)}>
+								<i className="fas fa-play"></i>Play
+							</button>
+							<button onClick={() => showInfo()}>
+								<i className="fas fa-info-circle"></i>
+								Info
+							</button>
+							<button
+								className="unfav-icon"
+								onClick={() => subtractFromList(id)}>
+								<i className="fas fa-minus"></i>Remove
+							</button>
+						</div>
 					</div>
-				</div>
-			)}
-		</div>
+				)}
+			</div>
+		</>
 	);
 };
 

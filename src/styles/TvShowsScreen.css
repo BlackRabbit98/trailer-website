@@ -14,8 +14,7 @@
 	height: 35px;
 	max-width: 100px;
 	cursor: pointer;
-	margin-left: 20px;
-	margin-top: 80px;
+
 	background: linear-gradient(
 		263.41deg,
 		rgba(1, 141, 185, 1) 0%,
@@ -29,7 +28,9 @@
 
 .tvShows__genreSelector {
 	position: fixed;
-	z-index: 999;
+	z-index: 99;
+	left: 20px;
+	top: 80px;
 }
 
 .tvShows__genres {
@@ -37,7 +38,7 @@
 	flex-direction: column;
 	justify-content: center;
 	position: absolute;
-	left: 130px;
+	left: 100px;
 	bottom: -25px;
 	color: white;
 	width: 150px;
@@ -54,5 +55,3 @@
 .tvShows__genres > p:hover {
 	color: #02ffd1;
 }
-
-

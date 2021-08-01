@@ -24,22 +24,17 @@ function SignUpScreen({ loginHandler, isSignup = false, getStartedEmail }) {
 	const submitHandler = (e) => {
 		e.preventDefault();
 		let regEmail = /^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/;
-		if (regEmail.test(email)) {
-			setEmailValidation(null);
-			/* return true */
-		} else {
+		if (!regEmail.test(email)) {
 			setEmailValidation('Please enter correct email address');
+			return;
 		}
-
-		let regPassword = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-		if (regPassword.test(password)) {
-			setPasswordValidation(null);
-		} else {
+		let regPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+		if (!regPassword.test(password)) {
 			setPasswordValidation(
-				'Please enter minimum eight characters, at least one letter and one number'
+				'Please enter minimum nine characters, at least one letter and one number'
 			);
+			return;
 		}
-
 		if (
 			emailValidation === null &&
 			passwordValidation === null &&
@@ -47,6 +42,11 @@ function SignUpScreen({ loginHandler, isSignup = false, getStartedEmail }) {
 		) {
 			//console.log('Calling API');
 			signUp ? register(e) : signIn(e);
+		} else {
+			setEmailValidation('Please enter correct email address');
+			setPasswordValidation(
+				'Please enter minimum nine characters, at least one letter and one number'
+			);
 		}
 	};
 
@@ -54,7 +54,7 @@ function SignUpScreen({ loginHandler, isSignup = false, getStartedEmail }) {
 		let emailVal = e.target.value;
 		setEmail(emailVal);
 		let regEmail = /^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/;
-		if (regEmail.test(email)) {
+		if (regEmail.test(emailVal)) {
 			setEmailValidation(null);
 			/* return true */
 		}
@@ -63,8 +63,8 @@ function SignUpScreen({ loginHandler, isSignup = false, getStartedEmail }) {
 	const passwordChangeHandler = (e) => {
 		let passVal = e.target.value;
 		setPassword(passVal);
-		let regPassword = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-		if (regPassword.test(password)) {
+		let regPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+		if (regPassword.test(passVal)) {
 			setPasswordValidation(null);
 			/* return true */
 		}

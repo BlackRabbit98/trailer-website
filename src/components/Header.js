@@ -10,6 +10,7 @@ import { logout } from '../actions/userActions';
 
 export default function Header() {
 	const [showAvatarMenu, setShowAvatarMenu] = useState(false);
+	const [showHamMenu, setShowHamMenu] = useState(false);
 	const [expandSearchMenu, setExpandSearchMenu] = useState(false);
 
 	const [searchQuery, setSearchQuery] = useState('');
@@ -28,8 +29,59 @@ export default function Header() {
 		}
 	};
 
+	const hamMenu = (
+		<div
+			className="header_hamMenu_container"
+			onClick={() => setShowHamMenu(false)}>
+			<div className="header_hamMenu">
+				<div exact className="home_link">
+					<i className="fas fa-times-circle"></i>
+				</div>
+				<NavLink
+					to="/"
+					exact
+					className="home_link"
+					activeClassName="active_link">
+					<p>Home</p>
+				</NavLink>
+				<NavLink
+					to="/tvshows"
+					exact
+					className="home_link"
+					activeClassName="active_link">
+					<p>TV Shows</p>
+				</NavLink>
+				<NavLink
+					to="/movies"
+					exact
+					className="home_link"
+					activeClassName="active_link">
+					<p>Movies</p>
+				</NavLink>
+				<NavLink
+					to="/new"
+					exact
+					className="home_link"
+					activeClassName="active_link">
+					<p>New</p>
+				</NavLink>
+				<NavLink
+					to="/mylist"
+					exact
+					className="home_link"
+					activeClassName="active_link">
+					<p>My List</p>
+				</NavLink>
+			</div>
+		</div>
+	);
+
 	return (
 		<div className="header">
+			{showHamMenu && hamMenu}
+			<div className="header_ham" onClick={() => setShowHamMenu(true)}>
+				<i className="fas fa-bars"></i>
+			</div>
 			<div className="header_left">
 				<h2>Trailerzz</h2>
 			</div>

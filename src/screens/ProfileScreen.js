@@ -4,17 +4,22 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { getUserDetails, logout } from '../actions/userActions';
+import {
+	getUserDetails,
+	logout,
+	updateUserProfile,
+} from '../actions/userActions';
 import '../styles/ProfileScreen.css';
 import db, { auth } from '../utils/firebase';
+import firebase from 'firebase';
 
 const ProfileScreen = () => {
 	const [displayName, setDisplayName] = useState('');
 	const [email, setEmail] = useState('');
 	const [photoURL, setPhotoURL] = useState('');
 	const [password, setPassword] = useState('');
-	const [updateVal, setUpdateVal] = useState('');
 	const updateValRef = useRef(null);
+	const pwRef = useRef(null);
 
 	const [type, setType] = useState('');
 	const [showPopup, setShowPopup] = useState(false);
@@ -53,13 +58,18 @@ const ProfileScreen = () => {
 		dispatch(getUserDetails());
 	};
 
-	const updateUsername = () => {
+	const updateUsername = (displayName) => {
 		const user = auth.currentUser;
 
 		user.updateProfile({
 			displayName,
 		})
 			.then(() => {
+				if (user) {
+					setDisplayName(user.displayName);
+					setEmail(user.email);
+					setPhotoURL(user.photoURL);
+				}
 				// Update successful
 				//console.log('Update successful');
 			})
@@ -69,13 +79,19 @@ const ProfileScreen = () => {
 			});
 	};
 
-	const updateUserPhoto = () => {
+	const updateUserPhoto = (photoURL) => {
 		const user = auth.currentUser;
 
 		user.updateProfile({
 			photoURL,
 		})
 			.then(() => {
+				const user = auth.currentUser;
+				if (user) {
+					setDisplayName(user.displayName);
+					setEmail(user.email);
+					setPhotoURL(user.photoURL);
+				}
 				// Update successful
 				//console.log('Update successful');
 			})
@@ -87,60 +103,111 @@ const ProfileScreen = () => {
 
 	const updateUserEmail = (val) => {
 		const user = auth.currentUser;
+		const credential = firebase.auth.EmailAuthProvider.credential(
+			user.email,
+			pwRef.current.value
+		);
 
-		user.updateEmail(val)
+		user.reauthenticateWithCredential(credential)
 			.then(() => {
-				// Update successful
-				//console.log('Update successful');
+				// User re-authenticated.
+				user.updateEmail(val)
+					.then(() => {
+						// Update successful
+						if (user) {
+							setDisplayName(user.displayName);
+							setEmail(user.email);
+							setPhotoURL(user.photoURL);
+						}
+						console.log('Update successful');
+					})
+					.catch((error) => {
+						// An error occurred
+						console.log('Error Occured', error);
+					});
 			})
 			.catch((error) => {
-				// An error occurred
-				//console.log('Error Occured', error);
+				// An error ocurred
+				// ...
+				console.log('Error Occured', error);
 			});
 	};
 
-	const updateUserPassword = () => {
+	const updateUserPassword = (val) => {
 		const user = auth.currentUser;
+		const credential = firebase.auth.EmailAuthProvider.credential(
+			user.email,
+			pwRef.current.value
+		);
 
-		user.updatePassword({
-			password,
-		})
+		user.reauthenticateWithCredential(credential)
 			.then(() => {
-				// Update successful
-				//console.log('Update successful');
+				// User re-authenticated.
+				user.updatePassword(val)
+					.then(() => {
+						// Update successful
+						console.log('Update successful');
+					})
+					.catch((error) => {
+						// An error occurred
+						console.log('Error Occured', error);
+					});
 			})
 			.catch((error) => {
-				// An error occurred
-				//console.log('Error Occured', error);
+				// An error ocurred
+				// ...
+				console.log('Error Occured', error);
 			});
 	};
 
 	const ChangeDataPopupSubmitHandler = (e) => {
 		e.preventDefault();
-		//console.log(updateValRef.current.value);
-		if (type === 'Email') {
+		console.log(password);
+		console.log(updateValRef.current.value);
+		if (type === 'Name') {
+			updateUsername(updateValRef.current.value);
+		} else if (type === 'Photo') {
+			updateUserPhoto(updateValRef.current.value);
+		} else if (type === 'Email') {
 			updateUserEmail(updateValRef.current.value);
+		} else if (type === 'Password') {
+			updateUserPassword(updateValRef.current.value);
 		}
 		setShowPopup(!showPopup);
 	};
 
-	const ChangeDataPopup = () => (
-		<div className="changeProfileData">
-			<div
-				className="changeProfileData_modal"
-				onClick={(e) => {
-					if (e.target === e.currentTarget) {
-						setShowPopup(!showPopup);
-					}
-				}}
-			/>
-			<div className="changeProfileData_main">
-				<label>New {type}</label>
-				<input type="text" ref={updateValRef} />
-				<button onClick={ChangeDataPopupSubmitHandler}>Save</button>
+	const ChangeDataPopup = () => {
+		let isSecret = false;
+		if (type === 'Email') {
+			isSecret = true;
+		} else if (type === 'Password') {
+			isSecret = true;
+		}
+		return (
+			<div className="changeProfileData">
+				<div
+					className="changeProfileData_modal"
+					onClick={(e) => {
+						if (e.target === e.currentTarget) {
+							setShowPopup(!showPopup);
+						}
+					}}
+				/>
+				<div className="changeProfileData_main">
+					<label>New {type}</label>
+					<input type="text" ref={updateValRef} />
+					{isSecret && (
+						<div>
+							<label>Enter Current Password</label>
+							<input ref={pwRef} />
+						</div>
+					)}
+
+					<button onClick={ChangeDataPopupSubmitHandler}>Save</button>
+				</div>
 			</div>
-		</div>
-	);
+		);
+	};
 
 	const capitalizeFirstLetter = (s) =>
 		(s && s[0].toUpperCase() + s.slice(1)) || '';
@@ -169,7 +236,12 @@ const ProfileScreen = () => {
 								alt=""
 							/>
 						</div>
-						<button className="editButton">
+						<button
+							className="editButton"
+							onClick={() => {
+								setType('Photo');
+								setShowPopup(true);
+							}}>
 							<i className="far fa-edit"></i>
 						</button>
 					</div>
@@ -202,7 +274,12 @@ const ProfileScreen = () => {
 								<h4>It's a secret!</h4>
 							</div>
 							<div className="personalDetails_containerRight">
-								<button className="editButton1">
+								<button
+									className="editButton1"
+									onClick={() => {
+										setType('Name');
+										setShowPopup(true);
+									}}>
 									<i className="far fa-edit"></i>
 									Edit
 								</button>
@@ -215,7 +292,12 @@ const ProfileScreen = () => {
 									<i className="far fa-edit"></i>
 									Edit
 								</button>
-								<button className="editButton3">
+								<button
+									className="editButton3"
+									onClick={() => {
+										setType('Password');
+										setShowPopup(true);
+									}}>
 									<i className="far fa-edit"></i>
 									Edit
 								</button>

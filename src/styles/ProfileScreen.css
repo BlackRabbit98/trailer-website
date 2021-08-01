@@ -67,7 +67,9 @@
 }
 
 .profilePicture > div > img {
-	object-fit: contain;
+	object-fit: cover;
+	height: 140px;
+	width: 140px;
 	max-height: 100%;
 	max-width: 100%;
 }

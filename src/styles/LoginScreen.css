@@ -177,3 +177,51 @@
 	cursor: pointer;
 	font-weight: bold;
 }
+
+@media only screen and (max-width: 800px) {
+	.loginScreen_top {
+		margin-top: 200px;
+	}
+	.moviePosters > img {
+		height: 120px !important;
+	}
+
+	.moviePosters {
+		border-radius: 10px;
+		margin-top: 10px;
+	}
+
+	.loginScreen_bottom {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+	}
+	.loginScreen_bottom > p {
+		font-size: 12px;
+	}
+
+	.loginScreen_bottom > img {
+		min-width: 80vw;
+		max-width: 80vw;
+		margin-bottom: 30px;
+	}
+
+	.loginScreen_topContents > .sentence1 {
+		font-size: 20px;
+		margin-bottom: 20px;
+	}
+
+	.loginScreen_topContents > .sentence2 {
+		font-size: 15px;
+		margin-bottom: 20px;
+	}
+
+	.loginScreen_topContents > .sentence3 {
+		font-size: 10px;
+	}
+
+	.emailbar {
+		width: 350px;
+	}
+}
