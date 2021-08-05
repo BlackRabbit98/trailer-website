@@ -51,18 +51,42 @@ const PaymentScreen = () => {
 				{type === 'pro' ? (
 					<div>
 						<h2>Pro Plan</h2>
-						<p className="middleText">Unlimited mylist items</p>
-						<p>Unlimited Trailers</p>
-						<p>Email notifications</p>
-						<p className="buttomText">$100/year</p>
+
+						<p className="topText">$100/year</p>
+						<div className="midText">
+							<p>
+								<i className="far fa-check-circle"></i>{' '}
+								Unlimited mylist items
+							</p>
+							<p>
+								<i className="far fa-check-circle"></i>{' '}
+								Unlimited Trailers
+							</p>
+							<p>
+								<i className="far fa-check-circle"></i> Email
+								notifications
+							</p>
+						</div>
 					</div>
 				) : (
 					<div>
 						<h2>Value Plan</h2>
-						<p className="middleText">50 mylist items</p>
-						<p>Unlimited Trailers</p>
-						<p>Email notifications</p>
-						<p className="buttomText">$50/year</p>
+
+						<p className="topText">$50/year</p>
+						<div className="midText">
+							<p>
+								<i className="far fa-check-circle"></i> 50
+								mylist items
+							</p>
+							<p>
+								<i className="far fa-check-circle"></i>{' '}
+								Unlimited Trailers
+							</p>
+							<p>
+								<i className="far fa-check-circle"></i> Email
+								notifications
+							</p>
+						</div>
 					</div>
 				)}
 				<h2>Pay Below to upgrade</h2>
