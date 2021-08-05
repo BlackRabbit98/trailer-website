@@ -97,6 +97,11 @@ const LoginScreen = () => {
 					<img src={LoginPoster5} alt="" />
 					<img src={LoginPoster6} alt="" />
 					<img src={LoginPoster2} alt="" />
+					<img src={LoginPoster3} alt="" />
+					<img src={LoginPoster4} alt="" />
+					<img src={LoginPoster5} alt="" />
+					<img src={LoginPoster6} alt="" />
+					<img src={LoginPoster2} alt="" />
 				</div>
 			</div>
 		</div>

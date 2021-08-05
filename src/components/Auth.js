@@ -100,7 +100,7 @@ function SignUpScreen({ loginHandler, isSignup = false, getStartedEmail }) {
 
 	const forgotPasswordEmailValidationHandler = (e) => {
 		let forgotPasswordEmailVal = e.target.value;
-		setEmail(forgotPasswordEmailVal);
+		setForgotPasswordEmail(forgotPasswordEmailVal);
 		let regEmail = /^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/;
 		if (regEmail.test(forgotPasswordEmailVal)) {
 			setForgotPasswordEmailValidation(null);
@@ -136,6 +136,13 @@ function SignUpScreen({ loginHandler, isSignup = false, getStartedEmail }) {
 
 	const forgotPasswordEmailHandler = (e) => {
 		e.preventDefault();
+		let regEmail = /^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/;
+		if (!regEmail.test(e.target.value)) {
+			setForgotPasswordEmailValidation(
+				'Please enter correct email address'
+			);
+			return;
+		}
 
 		if (forgotPasswordEmail !== '') {
 			setLoading(true);
@@ -196,9 +203,7 @@ function SignUpScreen({ loginHandler, isSignup = false, getStartedEmail }) {
 						<form>
 							<input
 								type="email"
-								onChange={(e) => {
-									setForgotPasswordEmail(e.target.value);
-								}}
+								onChange={forgotPasswordEmailValidationHandler}
 								value={forgotPasswordEmail}
 								placeholder="Email"
 							/>
