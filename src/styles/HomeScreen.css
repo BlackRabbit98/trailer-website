@@ -12,14 +12,24 @@
 	align-items: flex-start;
 }
 
-@media only screen and (max-height: 1080px) {
+@media only screen and (max-height: 1080px) and (min-height: 801px) {
 	.homeScreen_rows {
-		margin-top: 80vh;
+		margin-top: 55vh;
+	}
+}
+@media only screen and (max-height: 800px) and (min-height: 701px) {
+	.homeScreen_rows {
+		margin-top: 65vh;
 	}
 }
 
-@media only screen and (max-height: 800px) {
+@media only screen and (max-height: 700px) and (min-height: 601px) {
 	.homeScreen_rows {
-		margin-top: 65vh;
+		margin-top: 73vh;
+	}
+}
+@media only screen and (max-height: 600px) {
+	.homeScreen_rows {
+		margin-top: 90vh;
 	}
 }

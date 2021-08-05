@@ -11,14 +11,15 @@
 	flex-direction: column;
 	padding-top: 100px;
 	position: relative;
+	align-items: center;
 }
 
 .profileScreen_top {
 	display: flex;
 	min-height: 5vh;
-	min-width: 100%;
 	align-items: center;
-	margin-left: 100px;
+	margin-left: -250px;
+	padding-bottom: 20px;
 }
 
 .backArrow_button {
@@ -135,7 +136,7 @@
 	padding-bottom: 200px;
 }
 
-.profileScreen_middleTop > h1,
+.profileScreen_middleTop > h2,
 .profileScreen_middleButtom > h2 {
 	color: white;
 	padding-bottom: 10px;
@@ -171,7 +172,8 @@
 .personalDetails_containerRight {
 	display: flex;
 	flex-direction: column;
-	margin-left: 230px;
+	margin-left: auto;
+	margin-right: 20px;
 }
 
 .editButton1,
@@ -270,18 +272,38 @@
 }
 
 .changeProfileData_main {
+	height: fit-content;
 	display: flex;
 	flex-direction: column;
 	margin-top: 50px;
 	padding: 20px;
-	background: rgb(176, 176, 255);
-	max-height: 100px;
+	background: linear-gradient(160.6deg, #02c0c0 2.26%, #010101 97.33%);
 	z-index: 201;
+	border-radius: 10px;
 }
 
 .changeProfileData_main > input,
-.changeProfileData_main > button {
-	margin-top: 20px;
+.changeProfileData_main > button,
+.changeProfileData_main > div > input {
+	margin-top: 5px;
+	margin-bottom: 12px;
+	border: none;
+	border-radius: 3px;
+	padding: 6px 10px;
+	width: 250px;
+	align-items: center;
+	outline: none;
+}
+
+.changeProfileData_main > label,
+.changeProfileData_main > div > label {
+	color: white;
+	font-weight: 600;
+}
+
+.changeProfileData_main > div {
+	display: flex;
+	flex-direction: column;
 }
 
 .changeProfileData_modal {
@@ -291,4 +313,67 @@
 	min-width: 200vw;
 	left: -100vw;
 	top: -20vh;
+	background: rgba(0, 0, 0, 0.863);
+}
+
+.changeProfileData_main > button {
+	width: 100%;
+	font-size: 1rem;
+	color: #ffffff;
+	background: linear-gradient(
+		263.41deg,
+		rgba(1, 141, 185, 0.71) 0%,
+		#02ffd1 100%
+	);
+	font-weight: 600;
+	cursor: pointer;
+}
+
+@media only screen and (max-width: 600px) {
+	.profileScreen_buttom {
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.profileScreen_middle {
+		align-items: center;
+		width: fit-content;
+		height: fit-content;
+		margin-left: 0;
+		padding-bottom: 0;
+	}
+
+	.personalDetails_container {
+		width: 350px;
+	}
+
+	.profileScreen_top {
+		margin-left: -150px;
+	}
+
+	.profileScreen_sidebar {
+		padding-top: 0;
+		padding-bottom: 30px;
+		margin-left: 0;
+		height: fit-content;
+	}
+
+	.moreFeatures_container {
+		flex-direction: column;
+		align-items: center;
+		width: auto;
+		height: fit-content;
+	}
+
+	.profileScreen_middleTop > h2,
+	.profileScreen_middleButtom > h2 {
+		text-align: center;
+	}
+
+	.featuresContainer1,
+	.featuresContainer2,
+	.featuresContainer3 {
+		margin-bottom: 20px;
+		background: rgba(51, 45, 45, 0.246);
+	}
 }

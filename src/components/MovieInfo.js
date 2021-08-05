@@ -16,8 +16,11 @@ import { getUserDetails } from '../actions/userActions';
 
 const MovieInfo = ({ movie: movies, closeMovieInfoHandler, tv = false }) => {
 	const [movieTrailers, setMovieTrailers] = useState([]);
+	const [cast, setCast] = useState([]);
+	const [directorName, setDirectorName] = useState('Loading...');
 	const [videoId, setVideoId] = useState([]);
 	const [playing, setPlaying] = useState(false);
+	const [loading, setLoading] = useState(true);
 	const dispatch = useDispatch();
 
 	const userLogin = useSelector((state) => state.userLogin);
@@ -27,43 +30,50 @@ const MovieInfo = ({ movie: movies, closeMovieInfoHandler, tv = false }) => {
 	const { user } = userDetails;
 
 	const API_KEY = 'c7eb936e1918da481517817655a9e9db';
-	//console.log(movies);
 	useEffect(() => {
-		////console.log('useEffect 1 running');
-		console.log(movies);
 		async function fetchData() {
 			try {
 				if (tv) {
 					const { data } = await axios.get(
-						`/tv/${movies.id}/videos?api_key=${API_KEY}&append_to_response=videos`
+						`/tv/${movies.id}/videos?api_key=${API_KEY}&append_to_response=videos&append_to_response=credits`
 					);
-					//console.log(data);
+					const { data: castData } = await axios.get(
+						`/tv/${movies.id}?api_key=${API_KEY}&append_to_response=credits`
+					);
+					console.log(castData);
+					setCast(castData.credits.cast);
+					findDirector(castData.credits.crew);
 					setMovieTrailers(data.results);
-					return data;
 				} else {
 					const { data } = await axios.get(
-						`/movie/${movies.id}/videos?api_key=${API_KEY}&append_to_response=videos`
+						`/movie/${movies.id}/videos?api_key=${API_KEY}&append_to_response=videos&append_to_response=credits`
 					);
+					const { data: castData } = await axios.get(
+						`/movie/${movies.id}?api_key=${API_KEY}&append_to_response=credits`
+					);
+					findDirector(castData.credits.crew);
+					setCast(castData.credits.cast);
 					if (data.results.length < 1) {
 						const { data } = await axios.get(
 							`/tv/${movies.id}/videos?api_key=${API_KEY}&append_to_response=videos`
 						);
-						//console.log(data);
 						setMovieTrailers(data.results);
-						return data;
 					} else {
-						//console.log(data);
 						setMovieTrailers(data.results);
-						return data;
 					}
 				}
+				setLoading(false);
 			} catch (error) {
 				const { data } = await axios.get(
 					`/tv/${movies.id}/videos?api_key=${API_KEY}&append_to_response=videos`
 				);
-				//console.log(data);
+				const { data: castData } = await axios.get(
+					`/tv/${movies.id}?api_key=${API_KEY}&append_to_response=credits`
+				);
+				setCast(castData.credits.cast);
+				findDirector(castData.credits.crew);
 				setMovieTrailers(data.results);
-				return data;
+				setLoading(false);
 			}
 		}
 		fetchData();
@@ -72,6 +82,18 @@ const MovieInfo = ({ movie: movies, closeMovieInfoHandler, tv = false }) => {
 	const trailer = async (id) => {
 		setPlaying(false);
 		setVideoId(id);
+	};
+	const findDirector = (arr) => {
+		console.log(arr);
+		const directorName = arr.find(
+			(item) => item.known_for_department === 'Directing'
+		);
+
+		if (directorName) {
+			setDirectorName(directorName.name);
+		} else {
+			setDirectorName('Unknown');
+		}
 	};
 
 	useEffect(() => {
@@ -93,7 +115,6 @@ const MovieInfo = ({ movie: movies, closeMovieInfoHandler, tv = false }) => {
 	};
 
 	const addToList = async (movieId) => {
-		//console.log('You clicked add to list');
 		try {
 			if (user.favMovies.length < Number(user.limit)) {
 				if (!user.favMovies) {
@@ -178,8 +199,6 @@ const MovieInfo = ({ movie: movies, closeMovieInfoHandler, tv = false }) => {
 					draggable: true,
 					progress: undefined,
 				});
-			} else {
-				//console.log('Not in the list');
 			}
 		} catch (error) {
 			//console.log('Error occured', error);
@@ -279,11 +298,7 @@ const MovieInfo = ({ movie: movies, closeMovieInfoHandler, tv = false }) => {
 								)}
 							</div>
 							<div className="directorInfo">
-								<p>
-									{movies?.title ||
-										movies?.name ||
-										movies?.original_name}
-								</p>
+								<p>Directed by: {directorName}</p>
 							</div>
 						</div>
 
@@ -326,7 +341,11 @@ const MovieInfo = ({ movie: movies, closeMovieInfoHandler, tv = false }) => {
 								<div className="castInfo_sidebar" />
 								<p className="castInfo_title">Starring Cast</p>
 								<p>
-									Casts coming soon! Please check back again.
+									{!loading
+										? cast?.length > 3
+											? `${cast[0].name}, ${cast[1].name}, ${cast[2].name}, ${cast[3].name}`
+											: 'Casts coming soon! Please check back again.'
+										: 'Loading...'}
 								</p>
 							</div>
 						</div>

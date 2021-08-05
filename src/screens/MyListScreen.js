@@ -181,7 +181,7 @@ const GetMovieData = ({ id, addMovieData }) => {
 	const getData = async (movieId) => {
 		try {
 			const { data } = await axios.get(
-				`/tv/${movieId}?api_key=${API_KEY}&language=en-US`
+				`/tv/${movieId}?api_key=${API_KEY}&language=en-US&append_to_response=credits`
 			);
 			//console.log('Requested Data: ', data);
 			setMovieData(data);
@@ -262,6 +262,14 @@ const MyListScreen = () => {
 							/>
 						);
 					})}
+
+				{user.favMovies && user.favMovies?.length < 1 && (
+					<div className="galleryContent">
+						<div class="galleryMessage">
+							You haven't added any trailers to your list yet.
+						</div>
+					</div>
+				)}
 			</div>
 		</div>
 	);

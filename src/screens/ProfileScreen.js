@@ -166,7 +166,7 @@ const ProfileScreen = () => {
 		console.log(updateValRef.current.value);
 		if (type === 'Name') {
 			updateUsername(updateValRef.current.value);
-		} else if (type === 'Photo') {
+		} else if (type === 'Photo URL') {
 			updateUserPhoto(updateValRef.current.value);
 		} else if (type === 'Email') {
 			updateUserEmail(updateValRef.current.value);
@@ -194,6 +194,13 @@ const ProfileScreen = () => {
 					}}
 				/>
 				<div className="changeProfileData_main">
+					<div className="cancelButton_container">
+						<div
+							className="cancelButton"
+							onClick={() => setShowPopup(!showPopup)}>
+							<i className="fas fa-times"></i>
+						</div>
+					</div>
 					<label>New {type}</label>
 					<input type="text" ref={updateValRef} />
 					{isSecret && (
@@ -239,7 +246,7 @@ const ProfileScreen = () => {
 						<button
 							className="editButton"
 							onClick={() => {
-								setType('Photo');
+								setType('Photo URL');
 								setShowPopup(true);
 							}}>
 							<i className="far fa-edit"></i>
@@ -259,7 +266,7 @@ const ProfileScreen = () => {
 
 				<div className="profileScreen_middle">
 					<div className="profileScreen_middleTop">
-						<h1>Personal Details</h1>
+						<h2>Personal Details</h2>
 						<div className="personalDetails_container">
 							<div className="personalDetails_containerLeft">
 								<p>Display Name</p>

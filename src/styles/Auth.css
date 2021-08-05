@@ -77,8 +77,11 @@
 	flex-direction: column;
 }
 
+.signupScreen_password > input,
+.signUpScreen_confirmPassword > input,
 .signUpScreen > form > input {
 	outline-width: 0;
+	width: 90%;
 	height: 35px;
 	margin-top: 20px;
 	border-radius: 5px;
@@ -89,6 +92,8 @@
 	color: #ffffff;
 }
 
+.signupScreen_password > input::placeholder,
+.signUpScreen_confirmPassword > input::placeholder,
 .signUpScreen > form > input::placeholder {
 	color: #ffffff;
 }
@@ -205,4 +210,17 @@
 	border-radius: 5px;
 	border: none;
 	outline: none;
+}
+.signupScreen_password,
+.signUpScreen_confirmPassword {
+	position: relative;
+}
+
+.signupScreen_password > i,
+.signUpScreen_confirmPassword > i {
+	position: absolute;
+	right: 10px;
+	top: 35px;
+	color: white;
+	cursor: pointer;
 }

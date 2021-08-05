@@ -95,6 +95,16 @@
 	margin-top: 10px;
 	margin-bottom: 10px;
 }
+.galleryContent {
+	min-height: 100vh;
+	min-width: 95vw;
+}
+.galleryMessage {
+	color: rgb(207, 203, 203);
+	text-align: center;
+	padding-top: 100px;
+	font-size: 20px;
+}
 
 @media only screen and (max-height: 1080px) {
 	.myList_rowPosters {
@@ -110,6 +120,11 @@
 	.tvShowsButton {
 		height: 30px;
 		width: 82px;
+	}
+
+	.galleryMessage {
+		padding-right: 72px;
+		font-size: 16px;
 	}
 
 	.rectangleButton {

@@ -2,14 +2,19 @@
 	min-height: 100vh;
 	display: flex;
 	justify-content: center;
-	background: rgb(185, 244, 252);
+	background: linear-gradient(
+		292.68deg,
+		rgba(0, 195, 195, 0.96) 0%,
+		rgba(45, 45, 45, 0.9) 59.54%
+	);
 }
 .payment_main {
 	margin-top: 10vh;
 	display: flex;
 	flex-direction: column;
 	height: max-content;
-	min-width: 350px;
+	min-width: 300px;
 	background: white;
 	padding: 12px 20px;
+	border-radius: 5px;
 }

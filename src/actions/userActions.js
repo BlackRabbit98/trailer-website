@@ -20,7 +20,7 @@ import db, { auth } from '../utils/firebase';
 const createUserDetails = async (userId) => {
 	//console.log('Creating first time user details');
 	try {
-		const createDetails = await db.collection('movies').doc(userId).set({
+		await db.collection('movies').doc(userId).set({
 			favMovies: [],
 			limit: 10,
 		});
@@ -29,6 +29,23 @@ const createUserDetails = async (userId) => {
 	} catch (error) {
 		console.error('Error writing document: ', error);
 	}
+};
+
+const updateUsername = async (displayName) => {
+	const user = auth.currentUser;
+
+	user.updateProfile({
+		displayName,
+	})
+		.then((res) => {
+			console.log(res);
+			// Update successful
+			//console.log('Update successful');
+		})
+		.catch((error) => {
+			// An error occurred
+			//console.log('Error Occured', error);
+		});
 };
 
 export const login = (email, password) => async (dispatch) => {
@@ -60,8 +77,6 @@ export const login = (email, password) => async (dispatch) => {
 		// 	config
 		// );
 
-		createUserDetails(user.uid);
-
 		dispatch({
 			type: USER_LOGIN_SUCCESS,
 			payload: user,
@@ -83,7 +98,7 @@ export const logout = () => (dispatch) => {
 	dispatch({ type: USER_DETAILS_RESET });
 };
 
-export const register = (email, password) => async (dispatch) => {
+export const register = (email, password, username) => async (dispatch) => {
 	try {
 		dispatch({
 			type: USER_REGISTER_REQUEST,
@@ -105,7 +120,8 @@ export const register = (email, password) => async (dispatch) => {
 			email,
 			password
 		);
-		createUserDetails(user.uid);
+		await createUserDetails(user.uid);
+		await updateUsername(username);
 
 		dispatch({
 			type: USER_REGISTER_SUCCESS,

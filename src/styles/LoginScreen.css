@@ -136,7 +136,7 @@
 	align-items: center;
 	flex-wrap: wrap;
 	position: fixed;
-	z-index: 100;
+	z-index: 10;
 	width: 100vw;
 	height: 66px;
 	background: linear-gradient(

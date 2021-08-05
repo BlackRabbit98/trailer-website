@@ -5,21 +5,34 @@ import { login, register as registerAction } from '../actions/userActions';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { auth } from '../utils/firebase';
+import LoadingScreen from './LoadingScreen';
+import { toast } from 'react-toastify';
 
 function SignUpScreen({ loginHandler, isSignup = false, getStartedEmail }) {
 	const [signUp, setSignUp] = useState(isSignup);
+	const [username, setUsername] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const [confirmPassword, setConfirmPassword] = useState('');
 	const [emailValidation, setEmailValidation] = useState('');
 	const [passwordValidation, setPasswordValidation] = useState('');
+	const [confirmPasswordValidation, setConfirmPasswordValidation] =
+		useState('');
+
 	const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false);
+	const [loading, setLoading] = useState(false);
 	const [forgotPasswordEmail, setForgotPasswordEmail] = useState('');
+	const [forgotPasswordEmailValidation, setForgotPasswordEmailValidation] =
+		useState('');
 
 	const userLogin = useSelector((state) => state.userLogin);
 	const { error } = userLogin;
 
 	const userRegister = useSelector((state) => state.userRegister);
 	const { error: errorSignup } = userRegister;
+
+	const [inputType, setInputType] = useState('password');
+	const [inputType2, setInputType2] = useState('password');
 
 	const submitHandler = (e) => {
 		e.preventDefault();
@@ -32,6 +45,12 @@ function SignUpScreen({ loginHandler, isSignup = false, getStartedEmail }) {
 		if (!regPassword.test(password)) {
 			setPasswordValidation(
 				'Please enter minimum nine characters, at least one letter and one number'
+			);
+			return;
+		}
+		if (password !== confirmPassword) {
+			setConfirmPasswordValidation(
+				'Your confirm password does not match to password'
 			);
 			return;
 		}
@@ -63,9 +82,28 @@ function SignUpScreen({ loginHandler, isSignup = false, getStartedEmail }) {
 	const passwordChangeHandler = (e) => {
 		let passVal = e.target.value;
 		setPassword(passVal);
-		let regPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+		let regPassword = /^(?=.*[a-z])(?=.*\d).{8,}$/;
 		if (regPassword.test(passVal)) {
 			setPasswordValidation(null);
+			/* return true */
+		}
+	};
+
+	const confirmPasswordChangeHandler = (e) => {
+		let passVal = e.target.value;
+		setConfirmPassword(passVal);
+		if (passVal === password) {
+			setConfirmPasswordValidation(null);
+			/* return true */
+		}
+	};
+
+	const forgotPasswordEmailValidationHandler = (e) => {
+		let forgotPasswordEmailVal = e.target.value;
+		setEmail(forgotPasswordEmailVal);
+		let regEmail = /^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/;
+		if (regEmail.test(forgotPasswordEmailVal)) {
+			setForgotPasswordEmailValidation(null);
 			/* return true */
 		}
 	};
@@ -78,16 +116,18 @@ function SignUpScreen({ loginHandler, isSignup = false, getStartedEmail }) {
 		if (getStartedEmail) setEmail(getStartedEmail);
 	}, [getStartedEmail]);
 
-	const register = (e) => {
+	const register = async (e) => {
 		e.preventDefault();
-
-		dispatch(registerAction(email, password));
+		setLoading(true);
+		await dispatch(registerAction(email, password, username));
+		setLoading(false);
 	};
 
-	const signIn = (e) => {
+	const signIn = async (e) => {
 		e.preventDefault();
-
-		dispatch(login(email, password));
+		setLoading(true);
+		await dispatch(login(email, password));
+		setLoading(false);
 	};
 
 	const switchSignUp = () => {
@@ -96,16 +136,36 @@ function SignUpScreen({ loginHandler, isSignup = false, getStartedEmail }) {
 
 	const forgotPasswordEmailHandler = (e) => {
 		e.preventDefault();
+
 		if (forgotPasswordEmail !== '') {
+			setLoading(true);
 			auth.sendPasswordResetEmail(forgotPasswordEmail)
 				.then(() => {
 					// Password reset email sent!
 					// ..
 					//console.log('email sent');
+
+					setLoading(false);
+					setForgotPasswordOpen(!forgotPasswordOpen);
+					setForgotPasswordEmail('');
+					toast.success(
+						'📨 Please check your email for Password reset link!!',
+						{
+							position: 'top-center',
+							autoClose: 2500,
+							hideProgressBar: false,
+							closeOnClick: true,
+							pauseOnHover: true,
+							draggable: true,
+							progress: undefined,
+						}
+					);
 				})
 				.catch((error) => {
 					const errorCode = error.code;
 					const errorMessage = error.message;
+
+					setLoading(false);
 					//console.log(errorCode, errorMessage);
 					// ..
 				});
@@ -114,6 +174,7 @@ function SignUpScreen({ loginHandler, isSignup = false, getStartedEmail }) {
 
 	return (
 		<div className="signUpScreen__Container">
+			{loading && <LoadingScreen />}
 			{forgotPasswordOpen && (
 				<div
 					className="forgotPasswordContainer"
@@ -141,6 +202,11 @@ function SignUpScreen({ loginHandler, isSignup = false, getStartedEmail }) {
 								value={forgotPasswordEmail}
 								placeholder="Email"
 							/>
+							{forgotPasswordEmailValidation && (
+								<p className="SignInVal">
+									⚠️ {forgotPasswordEmailValidation}
+								</p>
+							)}
 							<button onClick={forgotPasswordEmailHandler}>
 								Send reset email
 							</button>
@@ -158,7 +224,14 @@ function SignUpScreen({ loginHandler, isSignup = false, getStartedEmail }) {
 				</div>
 				<form>
 					<h1>{signUp ? 'Sign Up' : 'Sign In'}</h1>
-					{signUp && <input type="text" placeholder="Name" />}
+					{signUp && (
+						<input
+							type="text"
+							placeholder="Name"
+							value={username}
+							onChange={(e) => setUsername(e.target.value)}
+						/>
+					)}
 					<input
 						type="email"
 						onChange={emailChangeHandler}
@@ -168,17 +241,53 @@ function SignUpScreen({ loginHandler, isSignup = false, getStartedEmail }) {
 					{emailValidation && (
 						<p className="SignInVal">⚠️ {emailValidation}</p>
 					)}
-					<input
-						type="password"
-						value={password}
-						onChange={passwordChangeHandler}
-						placeholder="Password"
-					/>
+					<div className="signupScreen_password">
+						<input
+							type={inputType}
+							value={password}
+							onChange={passwordChangeHandler}
+							placeholder="Password"
+						/>
+						{inputType === 'password' ? (
+							<i
+								className="fas fa-eye"
+								onClick={() => setInputType('text')}></i>
+						) : (
+							<i
+								className="fas fa-eye-slash"
+								onClick={() => setInputType('password')}></i>
+						)}
+					</div>
+
 					{passwordValidation && (
 						<p className="SignInVal">⚠️ {passwordValidation}</p>
 					)}
 					{signUp && (
-						<input type="password" placeholder="Confirm Password" />
+						<div className="signupScreen_password">
+							<input
+								type={inputType2}
+								value={confirmPassword}
+								onChange={confirmPasswordChangeHandler}
+								placeholder="Confirm Password"
+							/>
+							{inputType2 === 'password' ? (
+								<i
+									className="fas fa-eye"
+									onClick={() => setInputType2('text')}></i>
+							) : (
+								<i
+									className="fas fa-eye-slash"
+									onClick={() =>
+										setInputType2('password')
+									}></i>
+							)}
+						</div>
+					)}
+
+					{confirmPasswordValidation && (
+						<p className="SignInVal">
+							⚠️ {confirmPasswordValidation}
+						</p>
 					)}
 					<button type="submit" onClick={submitHandler}>
 						{signUp ? 'CREATE ACCOUNT' : 'LOGIN'}

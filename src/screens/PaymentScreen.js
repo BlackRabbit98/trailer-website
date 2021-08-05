@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { PayPalButton } from 'react-paypal-button-v2';
 import { useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
-import '../styles/paymentScreen.css';
+import '../styles/PaymentScreen.css';
 import db from '../utils/firebase';
 
 const mapPaymentTypeToAmount = {
