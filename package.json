@@ -13,6 +13,7 @@
     "firebase": "^8.6.8",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-horizontal-scrolling-menu": "^2.0.2",
     "react-modal-video": "^1.2.7",
     "react-paypal-button-v2": "^2.6.3",
     "react-redux": "^7.2.4",

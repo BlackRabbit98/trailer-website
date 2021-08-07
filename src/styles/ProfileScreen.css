@@ -146,7 +146,8 @@
 	display: flex;
 	width: 500px;
 	height: 210px;
-	background: rgba(255, 255, 255, 0.15);
+	background: rgba(53, 51, 51, 0.733);
+	box-shadow: 0px 4px 4px rgba(255, 255, 255, 0.25);
 	border-radius: 20px;
 	padding-top: 10px;
 	margin-bottom: 30px;
@@ -208,18 +209,20 @@
 .moreFeatures_container {
 	display: flex;
 	width: 690px;
-	height: 310px;
 	border-radius: 20px;
 	padding-top: 10px;
 	margin-bottom: 30px;
 }
-
+.moreFeatures_container > div > h2 {
+	color: #02ffd1;
+}
 .featuresContainer1,
 .featuresContainer2,
 .featuresContainer3 {
 	width: 200px;
-	height: 300px;
-	background: rgba(255, 255, 255, 0.15);
+
+	background: rgba(53, 51, 51, 0.733);
+	box-shadow: 0px 4px 4px rgba(255, 255, 255, 0.25);
 	border-radius: 20px;
 	margin-right: 20px;
 	display: flex;
@@ -251,6 +254,18 @@
 		rgb(0, 153, 255) 0%,
 		rgb(162, 0, 255) 100%
 	);
+}
+
+.midText1,
+.topText1 {
+	margin-bottom: 4rem;
+	color: white;
+}
+
+.topText1 {
+	margin-top: 0.5rem;
+	font-size: 30px;
+	font-weight: bolder;
 }
 
 .middleText1 {

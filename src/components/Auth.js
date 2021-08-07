@@ -44,11 +44,11 @@ function SignUpScreen({ loginHandler, isSignup = false, getStartedEmail }) {
 		let regPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
 		if (!regPassword.test(password)) {
 			setPasswordValidation(
-				'Please enter minimum nine characters, at least one letter and one number'
+				'Please enter minimum eight characters, at least one capital letter, one small and one number'
 			);
 			return;
 		}
-		if (password !== confirmPassword) {
+		if (signUp && password !== confirmPassword) {
 			setConfirmPasswordValidation(
 				'Your confirm password does not match to password'
 			);
@@ -64,7 +64,7 @@ function SignUpScreen({ loginHandler, isSignup = false, getStartedEmail }) {
 		} else {
 			setEmailValidation('Please enter correct email address');
 			setPasswordValidation(
-				'Please enter minimum nine characters, at least one letter and one number'
+				'Please enter minimum eight characters, at least one capital letter, one small and one number'
 			);
 		}
 	};
@@ -119,15 +119,24 @@ function SignUpScreen({ loginHandler, isSignup = false, getStartedEmail }) {
 	const register = async (e) => {
 		e.preventDefault();
 		setLoading(true);
-		await dispatch(registerAction(email, password, username));
-		setLoading(false);
+
+		try {
+			await dispatch(registerAction(email, password, username));
+			setLoading(false);
+		} catch (error) {
+			setLoading(false);
+		}
 	};
 
 	const signIn = async (e) => {
 		e.preventDefault();
 		setLoading(true);
-		await dispatch(login(email, password));
-		setLoading(false);
+		try {
+			await dispatch(login(email, password));
+			setLoading(false);
+		} catch (error) {
+			setLoading(false);
+		}
 	};
 
 	const switchSignUp = () => {
@@ -137,7 +146,7 @@ function SignUpScreen({ loginHandler, isSignup = false, getStartedEmail }) {
 	const forgotPasswordEmailHandler = (e) => {
 		e.preventDefault();
 		let regEmail = /^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/;
-		if (!regEmail.test(e.target.value)) {
+		if (!regEmail.test(forgotPasswordEmail)) {
 			setForgotPasswordEmailValidation(
 				'Please enter correct email address'
 			);
@@ -169,9 +178,6 @@ function SignUpScreen({ loginHandler, isSignup = false, getStartedEmail }) {
 					);
 				})
 				.catch((error) => {
-					const errorCode = error.code;
-					const errorMessage = error.message;
-
 					setLoading(false);
 					//console.log(errorCode, errorMessage);
 					// ..

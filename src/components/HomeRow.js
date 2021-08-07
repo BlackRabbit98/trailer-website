@@ -10,6 +10,8 @@ import db from '../utils/firebase';
 import { toast } from 'react-toastify';
 import MovieInfo from './MovieInfo';
 
+const VIEWPORT_WIDTH = window.innerWidth;
+
 const HomeRow = ({ title, fetchUrl, type }) => {
 	const [movies, setMovies] = useState([]);
 	const [videoId, setVideoId] = useState([]);
@@ -18,6 +20,16 @@ const HomeRow = ({ title, fetchUrl, type }) => {
 	const [movieData, setMovieData] = useState([]);
 
 	const dispatch = useDispatch();
+
+	const scrollRef = React.createRef();
+
+	const handleNav = (direction) => {
+		if (direction === 'left') {
+			scrollRef && (scrollRef.current.scrollLeft -= VIEWPORT_WIDTH);
+		} else {
+			scrollRef && (scrollRef.current.scrollLeft += VIEWPORT_WIDTH);
+		}
+	};
 
 	const userLogin = useSelector((state) => state.userLogin);
 	const { userInfo } = userLogin;
@@ -160,49 +172,63 @@ const HomeRow = ({ title, fetchUrl, type }) => {
 	}, [videoId]);
 
 	return (
-		<div className="homeRow">
-			<h2>{title}</h2>
-			{videoId && playing && videoId.site === 'YouTube' && (
-				<Grow in={playing} mountOnEnter unmountOnExit>
-					<ModalVideo
-						channel="youtube"
-						isOpen="true"
-						videoId={videoId.key}
-						onClose={() => setPlaying(false)}
-					/>
-				</Grow>
-			)}
-
-			{showMovieInfo && (
-				<MovieInfo
-					movie={movieData}
-					closeMovieInfoHandler={closeMovieInfoBox}
-				/>
-			)}
-
-			<div className="row">
-				{movies?.map((movie, idx) => (
-					<div className="imageBox" key={idx}>
-						<img
-							loading="lazy"
-							className="RowImage"
-							src={`${baseUrl}${movie.poster_path}`}
-							alt={movie.name}
+		<div className="homeRowMain">
+			<div className="homeRowMain__leftButton">
+				<div onClick={() => handleNav('left')}>
+					<i className="fas fa-chevron-left"></i>
+				</div>
+			</div>
+			<div className="homeRow" ref={scrollRef}>
+				<h2>{title}</h2>
+				{videoId && playing && videoId.site === 'YouTube' && (
+					<Grow in={playing} mountOnEnter unmountOnExit>
+						<ModalVideo
+							channel="youtube"
+							isOpen="true"
+							videoId={videoId.key}
+							onClose={() => setPlaying(false)}
 						/>
-						<div className="imageBackdrop">
-							<div className="imageBackdropButtons">
-								<div onClick={() => trailer(movie?.id)}>
-									<i className="fas fa-play"></i>
-								</div>
-								{user.favMovies ? (
-									user.favMovies.includes(movie?.id) ? (
-										<div
-											className="unfav-icon"
-											onClick={() =>
-												subtractFromList(movie?.id)
-											}>
-											<i className="fas fa-minus"></i>
-										</div>
+					</Grow>
+				)}
+
+				{showMovieInfo && (
+					<MovieInfo
+						movie={movieData}
+						closeMovieInfoHandler={closeMovieInfoBox}
+					/>
+				)}
+
+				<div className="row">
+					{movies?.map((movie, idx) => (
+						<div className="imageBox" key={idx}>
+							<img
+								loading="lazy"
+								className="RowImage"
+								src={`${baseUrl}${movie.poster_path}`}
+								alt={movie.name}
+							/>
+							<div className="imageBackdrop">
+								<div className="imageBackdropButtons">
+									<div onClick={() => trailer(movie?.id)}>
+										<i className="fas fa-play"></i>
+									</div>
+									{user.favMovies ? (
+										user.favMovies.includes(movie?.id) ? (
+											<div
+												className="unfav-icon"
+												onClick={() =>
+													subtractFromList(movie?.id)
+												}>
+												<i className="fas fa-minus"></i>
+											</div>
+										) : (
+											<div
+												onClick={() =>
+													addToList(movie?.id)
+												}>
+												<i className="fas fa-plus"></i>
+											</div>
+										)
 									) : (
 										<div
 											onClick={() =>
@@ -210,23 +236,24 @@ const HomeRow = ({ title, fetchUrl, type }) => {
 											}>
 											<i className="fas fa-plus"></i>
 										</div>
-									)
-								) : (
-									<div onClick={() => addToList(movie?.id)}>
-										<i className="fas fa-plus"></i>
+									)}
+									<div
+										onClick={() => {
+											setMovieData(movie);
+											setShowMovieInfo(true);
+										}}>
+										<i className="fas fa-info-circle"></i>
 									</div>
-								)}
-								<div
-									onClick={() => {
-										setMovieData(movie);
-										setShowMovieInfo(true);
-									}}>
-									<i className="fas fa-info-circle"></i>
 								</div>
 							</div>
 						</div>
-					</div>
-				))}
+					))}
+				</div>
+			</div>
+			<div className="homeRowMain__rightButton">
+				<div onClick={() => handleNav('right')}>
+					<i className="fas fa-chevron-right"></i>
+				</div>
 			</div>
 		</div>
 	);

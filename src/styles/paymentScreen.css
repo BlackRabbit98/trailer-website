@@ -20,6 +20,11 @@
 	box-shadow: 0px 4px 4px rgba(255, 255, 255, 0.25);
 }
 
+.payment_main > div > h2 {
+	display: flex;
+	align-items: center;
+}
+
 .payment_main > div > div {
 	z-index: 99;
 }
@@ -29,7 +34,6 @@
 	margin-bottom: 2.5rem;
 	color: white;
 }
-
 .topText,
 .midText > p {
 	margin-top: 0.5rem;

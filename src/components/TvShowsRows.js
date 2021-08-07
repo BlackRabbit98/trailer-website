@@ -13,6 +13,8 @@ import { getUserDetails } from '../actions/userActions';
 import { toast } from 'react-toastify';
 import MovieInfo from './MovieInfo';
 
+const VIEWPORT_WIDTH = window.innerWidth;
+
 const TvShowsRows = ({ title, fetchUrl, type }) => {
 	const [movies, setMovies] = useState([]);
 	const [videoId, setVideoId] = useState([]);
@@ -325,21 +327,46 @@ const TvShowsRows = ({ title, fetchUrl, type }) => {
 			</div>
 		</div>
 	);
-	console.log(movies[0]);
+	//console.log(movies[0]);
+
+	const scrollRef = React.createRef();
+	const handleNav = (direction) => {
+		if (direction === 'left') {
+			scrollRef && (scrollRef.current.scrollLeft -= VIEWPORT_WIDTH);
+		} else {
+			scrollRef && (scrollRef.current.scrollLeft += VIEWPORT_WIDTH);
+		}
+	};
 
 	return (
 		<div className="tvShowsRow" id={title}>
-			{showMovieInfo && (
-				<MovieInfo
-					movie={movieData}
-					closeMovieInfoHandler={closeMovieInfoBox}
-					tv={true}
-				/>
-			)}
-			<p>{title}</p>
-			<div className="tvShowsRowImages">
-				{movies && <TvShowRowStructure start={0} />}
-				{movies && <TvShowRowStructure start={7} />}
+			<div className="homeRowMain">
+				<div className="homeRowMain__leftButton">
+					<div onClick={() => handleNav('left')}>
+						<i className="fas fa-chevron-left"></i>
+					</div>
+				</div>
+
+				<div className="homeRow" ref={scrollRef}>
+					{showMovieInfo && (
+						<MovieInfo
+							movie={movieData}
+							closeMovieInfoHandler={closeMovieInfoBox}
+							tv={true}
+						/>
+					)}
+					<p>{title}</p>
+					<div className="tvShowsRowImages">
+						{movies && <TvShowRowStructure start={0} />}
+						{movies && <TvShowRowStructure start={7} />}
+					</div>
+				</div>
+
+				<div className="homeRowMain__rightButton">
+					<div onClick={() => handleNav('right')}>
+						<i className="fas fa-chevron-right"></i>
+					</div>
+				</div>
 			</div>
 		</div>
 	);

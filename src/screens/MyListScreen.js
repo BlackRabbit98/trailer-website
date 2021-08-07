@@ -12,6 +12,8 @@ import MovieInfo from '../components/MovieInfo';
 import { Grow } from '@material-ui/core';
 import ModalVideo from 'react-modal-video';
 
+const VIEWPORT_WIDTH = window.innerWidth;
+
 const truncate = (string, n) => {
 	return string?.length > n ? string.substr(0, n - 1) + '...' : string;
 };
@@ -48,12 +50,38 @@ const IndividualMovie = ({
 
 	const trailer = async (id) => {
 		setPlaying(false);
-		//console.log('Playing trailer');
 		async function playTrailer(id) {
+			try {
+				const requested = await axios.get(
+					`/movie/${id}/videos?api_key=${API_KEY}&append_to_response=videos`
+				);
+				console.log('Requested trailer: ', requested);
+				if (requested.data?.results.length < 1) {
+					setVideoId({
+						site: 'YouTube',
+						key: 'LMlCN6_vUvs',
+					});
+				} else {
+					setVideoId(requested.data?.results[0]);
+				}
+				return requested;
+			} catch (error) {
+				try {
+					playTvTrailer(id);
+				} catch (error) {
+					setVideoId({
+						site: 'YouTube',
+						key: 'LMlCN6_vUvs',
+					});
+				}
+			}
+		}
+
+		async function playTvTrailer(id) {
 			const requested = await axios.get(
-				`/movie/${id}/videos?api_key=${API_KEY}&append_to_response=videos`
+				`/tv/${id}/videos?api_key=${API_KEY}&append_to_response=videos`
 			);
-			//console.log('Requested trailer: ', requested);
+			console.log('Requested trailer: ', requested);
 			if (requested.data?.results.length < 1) {
 				setVideoId({
 					site: 'YouTube',
@@ -64,6 +92,7 @@ const IndividualMovie = ({
 			}
 			return requested;
 		}
+
 		playTrailer(id);
 	};
 
@@ -155,6 +184,7 @@ const IndividualMovie = ({
 							<button onClick={() => trailer(id)}>
 								<i className="fas fa-play"></i>Play
 							</button>
+
 							<button onClick={() => showInfo()}>
 								<i className="fas fa-info-circle"></i>
 								Info
@@ -227,6 +257,16 @@ const MyListScreen = () => {
 	const [showMovieInfo, setShowMovieInfo] = useState(false);
 	const [movieData, setMovieData] = useState([]);
 
+	const scrollRef = React.createRef();
+
+	const handleNav = (direction) => {
+		if (direction === 'left') {
+			scrollRef && (scrollRef.current.scrollLeft -= VIEWPORT_WIDTH);
+		} else {
+			scrollRef && (scrollRef.current.scrollLeft += VIEWPORT_WIDTH);
+		}
+	};
+
 	const closeMovieInfoBox = () => {
 		setShowMovieInfo(false);
 	};
@@ -251,25 +291,41 @@ const MyListScreen = () => {
 					closeMovieInfoHandler={closeMovieInfoBox}
 				/>
 			)}
-			<div className="myList_rowPosters">
-				{user.favMovies &&
-					user.favMovies?.map((item, idx) => {
-						return (
-							<GetMovieData
-								key={idx}
-								id={item}
-								addMovieData={addMovieData}
-							/>
-						);
-					})}
-
-				{user.favMovies && user.favMovies?.length < 1 && (
-					<div className="galleryContent">
-						<div class="galleryMessage">
-							You haven't added any trailers to your list yet.
-						</div>
+			<div className="homeRowMain">
+				<div className="homeRowMain__leftButton">
+					<div
+						className="list_scrollButton"
+						onClick={() => handleNav('left')}>
+						<i className="fas fa-chevron-left"></i>
 					</div>
-				)}
+				</div>
+				<div className="myList_rowPosters" ref={scrollRef}>
+					{user.favMovies &&
+						user.favMovies?.map((item, idx) => {
+							return (
+								<GetMovieData
+									key={idx}
+									id={item}
+									addMovieData={addMovieData}
+								/>
+							);
+						})}
+
+					{user.favMovies && user.favMovies?.length < 1 && (
+						<div className="galleryContent">
+							<div class="galleryMessage">
+								You haven't added any trailers to your list yet.
+							</div>
+						</div>
+					)}
+				</div>
+				<div className="homeRowMain__rightButton">
+					<div
+						className="list_scrollButton"
+						onClick={() => handleNav('right')}>
+						<i className="fas fa-chevron-right"></i>
+					</div>
+				</div>
 			</div>
 		</div>
 	);

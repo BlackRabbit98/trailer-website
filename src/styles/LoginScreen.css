@@ -214,20 +214,29 @@
 	}
 
 	.loginScreen_topContents > .sentence1 {
-		font-size: 20px;
+		font-size: 24px;
 		margin-bottom: 20px;
 	}
 
 	.loginScreen_topContents > .sentence2 {
-		font-size: 15px;
+		font-size: 18px;
 		margin-bottom: 20px;
 	}
 
 	.loginScreen_topContents > .sentence3 {
-		font-size: 10px;
+		font-size: 13px;
 	}
 
 	.emailbar {
-		width: 350px;
+		max-width: 90vw;
+		margin-bottom: 60px;
+	}
+	.emailbar > button {
+		width: 150px;
+		font-size: 14px;
+	}
+
+	.emailbar > input {
+		font-size: 14px;
 	}
 }

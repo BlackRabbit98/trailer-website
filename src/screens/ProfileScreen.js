@@ -225,7 +225,7 @@ const ProfileScreen = () => {
 			<div className="profileScreen_top">
 				<button
 					className="backArrow_button"
-					onClick={() => history.goBack()}>
+					onClick={() => history.push('/')}>
 					<i className="fas fa-arrow-left"></i>
 				</button>
 				<p>My Account</p>
@@ -317,9 +317,17 @@ const ProfileScreen = () => {
 						<div className="moreFeatures_container">
 							<div className="featuresContainer1">
 								<h2>Free Plan</h2>
-								<p className="middleText1">10 mylist items</p>
-								<p>Unlimited Trailers</p>
-								<p className="buttomText">Free</p>
+								<p className="topText1">Free</p>
+								<div className="midText1">
+									<p>
+										<i className="far fa-check-circle"></i>{' '}
+										10 mylist items
+									</p>
+									<p>
+										<i className="far fa-check-circle"></i>{' '}
+										Unlimited Trailers
+									</p>
+								</div>
 								<button
 									className={`featuresButton ${
 										user.limit === 10 &&
@@ -334,10 +342,21 @@ const ProfileScreen = () => {
 
 							<div className="featuresContainer2">
 								<h2>Value Plan</h2>
-								<p className="middleText">50 mylist items</p>
-								<p>Unlimited Trailers</p>
-								<p>Email notifications</p>
-								<p className="buttomText">$50/year</p>
+								<p className="topText">$50/year</p>
+								<div className="midText">
+									<p>
+										<i className="far fa-check-circle"></i>{' '}
+										50 mylist items
+									</p>
+									<p>
+										<i className="far fa-check-circle"></i>{' '}
+										Unlimited Trailers
+									</p>
+									<p>
+										<i className="far fa-check-circle"></i>{' '}
+										Email notifications
+									</p>
+								</div>
 								<button
 									className={`featuresButton ${
 										user.limit === 50 &&
@@ -356,12 +375,21 @@ const ProfileScreen = () => {
 
 							<div className="featuresContainer3">
 								<h2>Pro Plan</h2>
-								<p className="middleText">
-									Unlimited mylist items
-								</p>
-								<p>Unlimited Trailers</p>
-								<p>Email notifications</p>
-								<p className="buttomText">$100/year</p>
+								<p className="topText">$100/year</p>
+								<div className="midText">
+									<p>
+										<i className="far fa-check-circle"></i>{' '}
+										Unlimited mylist items
+									</p>
+									<p>
+										<i className="far fa-check-circle"></i>{' '}
+										Unlimited Trailers
+									</p>
+									<p>
+										<i className="far fa-check-circle"></i>{' '}
+										Email notifications
+									</p>
+								</div>
 								<button
 									className={`featuresButton ${
 										user.limit === 1000 &&

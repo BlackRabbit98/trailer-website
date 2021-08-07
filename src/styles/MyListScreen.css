@@ -11,6 +11,10 @@
 	position: relative;
 }
 
+.list_scrollButton {
+	margin-top: -360px !important;
+}
+
 .myList_row_modal {
 	position: absolute;
 	min-width: 200vw;
@@ -18,6 +22,7 @@
 	top: -100vh;
 	left: -100vw;
 	z-index: 2;
+	pointer-events: visible;
 }
 
 .myList_rowPosters {
@@ -27,6 +32,7 @@
 	padding-bottom: 500px;
 	width: auto;
 	padding-left: 60px;
+	scroll-behavior: smooth;
 }
 
 .myList_rowPosters::-webkit-scrollbar {
@@ -112,7 +118,7 @@
 	}
 }
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 600px) {
 	.myList_row > img {
 		height: 280px;
 	}
@@ -129,5 +135,15 @@
 
 	.rectangleButton {
 		justify-content: center;
+	}
+
+	.list_scrollButton {
+		margin-top: -340px !important;
+	}
+}
+
+@media only screen and (min-height: 1000px) {
+	.list_scrollButton {
+		margin-top: -200px !important;
 	}
 }

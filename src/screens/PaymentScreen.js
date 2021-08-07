@@ -50,7 +50,14 @@ const PaymentScreen = () => {
 			<div className="payment_main">
 				{type === 'pro' ? (
 					<div>
-						<h2>Pro Plan</h2>
+						<h2>
+							<button
+								className="backArrow_button"
+								onClick={() => history.goBack()}>
+								<i class="fas fa-angle-double-left"></i>
+							</button>
+							Pro Plan
+						</h2>
 
 						<p className="topText">$100/year</p>
 						<div className="midText">
@@ -70,7 +77,14 @@ const PaymentScreen = () => {
 					</div>
 				) : (
 					<div>
-						<h2>Value Plan</h2>
+						<h2>
+							<button
+								className="backArrow_button"
+								onClick={() => history.goBack()}>
+								<i class="fas fa-angle-double-left"></i>
+							</button>
+							Value Plan
+						</h2>
 
 						<p className="topText">$50/year</p>
 						<div className="midText">
