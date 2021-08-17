@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { PayPalButton } from 'react-paypal-button-v2';
 import { useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import '../styles/PaymentScreen.css';
 import db from '../utils/firebase';
 
@@ -43,6 +44,17 @@ const PaymentScreen = () => {
 				favMovies: [...user.favMovies],
 				limit: mapPaymentTypeToLimit[type],
 			});
+
+		toast.info('✔️ Thank you! Your payment is complete!', {
+			position: 'top-center',
+			autoClose: 3500,
+			hideProgressBar: false,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+		});
+
 		history.push('/myaccount');
 	};
 	return (

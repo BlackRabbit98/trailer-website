@@ -16,7 +16,6 @@ import { useState } from 'react';
 import { USER_LOGIN_SUCCESS } from './constants/userConstants';
 import { useSelector } from 'react-redux';
 import LoadingScreen from './components/LoadingScreen';
-import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import SearchScreen from './screens/SearchScreen';
 import PaymentScreen from './screens/PaymentScreen';
@@ -51,17 +50,6 @@ function App() {
 	}, [dispatch]);
 	return (
 		<div className="App">
-			<ToastContainer
-				position="bottom-right"
-				autoClose={5000}
-				hideProgressBar={false}
-				newestOnTop={false}
-				closeOnClick
-				rtl={false}
-				pauseOnFocusLoss
-				draggable
-				pauseOnHover
-			/>
 			<Router>
 				{loading ? (
 					<LoadingScreen />

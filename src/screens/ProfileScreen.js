@@ -12,6 +12,7 @@ import {
 import '../styles/ProfileScreen.css';
 import db, { auth } from '../utils/firebase';
 import firebase from 'firebase';
+import { toast } from 'react-toastify';
 
 const ProfileScreen = () => {
 	const [displayName, setDisplayName] = useState('');
@@ -69,6 +70,19 @@ const ProfileScreen = () => {
 					setDisplayName(user.displayName);
 					setEmail(user.email);
 					setPhotoURL(user.photoURL);
+
+					toast.info(
+						'✔️ Your user-name has been changed successfully!',
+						{
+							position: 'top-center',
+							autoClose: 2500,
+							hideProgressBar: false,
+							closeOnClick: true,
+							pauseOnHover: true,
+							draggable: true,
+							progress: undefined,
+						}
+					);
 				}
 				// Update successful
 				//console.log('Update successful');
@@ -91,6 +105,19 @@ const ProfileScreen = () => {
 					setDisplayName(user.displayName);
 					setEmail(user.email);
 					setPhotoURL(user.photoURL);
+
+					toast.info(
+						'✔️ Your profile pic has been changed successfully!',
+						{
+							position: 'top-center',
+							autoClose: 2500,
+							hideProgressBar: false,
+							closeOnClick: true,
+							pauseOnHover: true,
+							draggable: true,
+							progress: undefined,
+						}
+					);
 				}
 				// Update successful
 				//console.log('Update successful');
@@ -118,12 +145,25 @@ const ProfileScreen = () => {
 							setDisplayName(user.displayName);
 							setEmail(user.email);
 							setPhotoURL(user.photoURL);
+
+							toast.info(
+								'✔️ Your email has been changed successfully!',
+								{
+									position: 'top-center',
+									autoClose: 2500,
+									hideProgressBar: false,
+									closeOnClick: true,
+									pauseOnHover: true,
+									draggable: true,
+									progress: undefined,
+								}
+							);
 						}
-						console.log('Update successful');
+						//console.log('Update successful');
 					})
 					.catch((error) => {
 						// An error occurred
-						console.log('Error Occured', error);
+						//console.log('Error Occured', error);
 					});
 			})
 			.catch((error) => {
@@ -145,6 +185,18 @@ const ProfileScreen = () => {
 				// User re-authenticated.
 				user.updatePassword(val)
 					.then(() => {
+						toast.info(
+							'✔️ Your password has been changed successfully!',
+							{
+								position: 'top-center',
+								autoClose: 2500,
+								hideProgressBar: false,
+								closeOnClick: true,
+								pauseOnHover: true,
+								draggable: true,
+								progress: undefined,
+							}
+						);
 						// Update successful
 						console.log('Update successful');
 					})

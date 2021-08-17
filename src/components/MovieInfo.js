@@ -204,6 +204,20 @@ const MovieInfo = ({ movie: movies, closeMovieInfoHandler, tv = false }) => {
 			//console.log('Error occured', error);
 		}
 	};
+	const moviePosterChecker = (movieObj) => {
+		console.log(movieObj);
+		if (!!movieObj.backdrop_path) {
+			return (
+				'https://image.tmdb.org/t/p/original/' + movieObj.backdrop_path
+			);
+		} else if (!!movieObj.poster_path) {
+			return (
+				'https://image.tmdb.org/t/p/original/' + movieObj.poster_path
+			);
+		} else {
+			return 'https://www.mexp.com/wp-content/uploads/2020/02/Coming-Soon.png';
+		}
+	};
 
 	return (
 		<div className="movieInfo__containerMain">
@@ -220,12 +234,12 @@ const MovieInfo = ({ movie: movies, closeMovieInfoHandler, tv = false }) => {
 				</Grow>
 			)}
 
-			{movies && movies.backdrop_path && (
+			{movies && (
 				<div
 					className="movieInfo_container"
 					style={{
 						backgroundSize: 'cover',
-						backgroundImage: `url("https://image.tmdb.org/t/p/original/${movies?.backdrop_path}")`,
+						backgroundImage: `url("${moviePosterChecker(movies)}")`,
 						backgroundPosition: 'top',
 						backgroundRepeat: 'no-repeat',
 						borderRadius: '50px',

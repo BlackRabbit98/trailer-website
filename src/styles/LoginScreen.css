@@ -72,7 +72,6 @@
 .emailbar {
 	display: flex;
 	width: 750px;
-	height: 40px;
 	background: #ffffff;
 	border-radius: 5px;
 	align-items: center;
@@ -84,6 +83,7 @@
 }
 
 .emailbar > input {
+	border-radius: 5px;
 	padding: 10px;
 	height: 20px;
 	width: 80%;
@@ -204,7 +204,7 @@
 		justify-content: center;
 	}
 	.loginScreen_bottom > p {
-		font-size: 12px;
+		font-size: 16px;
 	}
 
 	.loginScreen_bottom > img {
@@ -229,14 +229,16 @@
 
 	.emailbar {
 		max-width: 90vw;
-		margin-bottom: 60px;
+		margin-bottom: 90px;
 	}
 	.emailbar > button {
 		width: 150px;
 		font-size: 14px;
+		height: 100%;
 	}
 
 	.emailbar > input {
 		font-size: 14px;
+		height: 16px;
 	}
 }

@@ -205,18 +205,27 @@ const TvShowsRows = ({ title, fetchUrl, type }) => {
 							<i className="fas fa-plus"></i>
 						</div>
 					)}
-					<div>
-						<i
-							onClick={() => {
-								setMovieData(movies[indexVal]);
-								setShowMovieInfo(true);
-							}}
-							className="fas fa-info-circle"></i>
+					<div
+						onClick={() => {
+							setMovieData(movies[indexVal]);
+							setShowMovieInfo(true);
+						}}>
+						<i className="fas fa-info-circle"></i>
 					</div>
 				</div>
 			</div>
 		</div>
 	);
+
+	const moviePosterChecker = (movieObj) => {
+		if (!!movieObj.poster_path) {
+			return baseUrl + movieObj.poster_path;
+		} else if (!!movieObj.backdrop_path) {
+			return baseUrl + movieObj.backdrop_path;
+		} else {
+			return 'https://www.windhorsepublications.com/wp-content/uploads/2019/11/image-coming-soon-placeholder2.png';
+		}
+	};
 
 	const TvShowRowStructure = ({ start = 0 }) => (
 		<div className="tvShowsRowsPosters">
@@ -234,22 +243,25 @@ const TvShowsRows = ({ title, fetchUrl, type }) => {
 			<div className="leftRowPosters">
 				<div className="leftRowPosters__top">
 					<RowImage
-						imgSource={`${baseUrl}${
-							movies[start + 0]?.poster_path
+						imgSource={`${
+							movies[start + 0] &&
+							moviePosterChecker(movies[start + 0])
 						}`}
 						id={movies[start + 0]?.id}
 						indexVal={start + 0}
 					/>
 					<RowImage
-						imgSource={`${baseUrl}${
-							movies[start + 1]?.poster_path
+						imgSource={`${
+							movies[start + 1] &&
+							moviePosterChecker(movies[start + 1])
 						}`}
 						id={movies[start + 1]?.id}
 						indexVal={start + 1}
 					/>
 					<RowImage
-						imgSource={`${baseUrl}${
-							movies[start + 2]?.poster_path
+						imgSource={`${
+							movies[start + 2] &&
+							moviePosterChecker(movies[start + 2])
 						}`}
 						id={movies[start + 2]?.id}
 						indexVal={start + 2}
@@ -257,22 +269,25 @@ const TvShowsRows = ({ title, fetchUrl, type }) => {
 				</div>
 				<div className="leftRowPosters__bottom">
 					<RowImage
-						imgSource={`${baseUrl}${
-							movies[start + 3]?.poster_path
+						imgSource={`${
+							movies[start + 3] &&
+							moviePosterChecker(movies[start + 3])
 						}`}
 						id={movies[start + 3]?.id}
 						indexVal={start + 3}
 					/>
 					<RowImage
-						imgSource={`${baseUrl}${
-							movies[start + 4]?.poster_path
+						imgSource={`${
+							movies[start + 4] &&
+							moviePosterChecker(movies[start + 4])
 						}`}
 						id={movies[start + 4]?.id}
 						indexVal={start + 4}
 					/>
 					<RowImage
-						imgSource={`${baseUrl}${
-							movies[start + 5]?.poster_path
+						imgSource={`${
+							movies[start + 5] &&
+							moviePosterChecker(movies[start + 5])
 						}`}
 						id={movies[start + 5]?.id}
 						indexVal={start + 5}
@@ -282,7 +297,10 @@ const TvShowsRows = ({ title, fetchUrl, type }) => {
 			<div className="rightRowPosters">
 				<img
 					className="rightRowImage"
-					src={`${baseUrl}${movies[start + 6]?.poster_path}`}
+					src={`${
+						movies[start + 6] &&
+						moviePosterChecker(movies[start + 6])
+					}`}
 					alt=""
 				/>
 				<div className="rightRow_imageBackdrop">
