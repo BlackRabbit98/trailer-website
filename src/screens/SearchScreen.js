@@ -34,13 +34,19 @@ const SearchScreen = () => {
 	useEffect(() => {
 		async function searchMovies() {
 			try {
-				const requested = await axios.get(
-					`search/movie?api_key=${API_KEY}&query=${query}`
+				const requestedMovie = await axios.get(
+					`search/movie?api_key=${API_KEY}&query=${query}&include_adult=false`
 				);
-				setSearchResults([...requested.data?.results]);
+				const requestedTv = await axios.get(
+					`search/tv?api_key=${API_KEY}&query=${query}&include_adult=false`
+				);
+				setSearchResults([
+					...requestedMovie.data?.results,
+					...requestedTv.data?.results,
+				]);
 				//console.log('Results', requested.data?.results);
 				setLoading(false);
-				return requested;
+				return requestedMovie;
 			} catch (error) {
 				//console.log('Error :', error);
 				setLoading(false);
