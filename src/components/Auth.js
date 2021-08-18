@@ -18,7 +18,7 @@ function SignUpScreen({ loginHandler, isSignup = false, getStartedEmail }) {
 	const [passwordValidation, setPasswordValidation] = useState('');
 	const [confirmPasswordValidation, setConfirmPasswordValidation] =
 		useState('');
-
+	const [blockAccount, setBlockAccount] = useState('');
 	const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [forgotPasswordEmail, setForgotPasswordEmail] = useState('');
@@ -124,6 +124,7 @@ function SignUpScreen({ loginHandler, isSignup = false, getStartedEmail }) {
 			await dispatch(registerAction(email, password, username));
 			setLoading(false);
 		} catch (error) {
+			setBlockAccount(error);
 			setLoading(false);
 		}
 	};
@@ -135,6 +136,7 @@ function SignUpScreen({ loginHandler, isSignup = false, getStartedEmail }) {
 			await dispatch(login(email, password));
 			setLoading(false);
 		} catch (error) {
+			setBlockAccount(error);
 			setLoading(false);
 		}
 	};
@@ -329,6 +331,10 @@ function SignUpScreen({ loginHandler, isSignup = false, getStartedEmail }) {
 							{signUp ? 'Sign In' : 'Sign Up'}
 						</span>
 					</h4>
+
+					{blockAccount && signUp && (
+						<p className="SignInVal">{blockAccount}</p>
+					)}
 					{error && !signUp && <p className="SignInVal">⚠️{error}</p>}
 					{errorSignup && signUp && (
 						<p className="SignInVal">⚠️{errorSignup}</p>

@@ -40,7 +40,7 @@ const MovieInfo = ({ movie: movies, closeMovieInfoHandler, tv = false }) => {
 					const { data: castData } = await axios.get(
 						`/tv/${movies.id}?api_key=${API_KEY}&append_to_response=credits`
 					);
-					console.log(castData);
+					//console.log(castData);
 					setCast(castData.credits.cast);
 					findDirector(castData.credits.crew);
 					setMovieTrailers(data.results);

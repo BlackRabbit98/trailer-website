@@ -84,9 +84,16 @@ export const login = (email, password) => async (dispatch) => {
 
 		localStorage.setItem('userInfo', JSON.stringify(user));
 	} catch (error) {
+		console.log('auth error', error);
+		let finalError = null;
+		if (error.code === 'auth/too-many-requests')
+			finalError =
+				'You have entered wrong password too many times. Try again later!';
 		dispatch({
 			type: USER_LOGIN_FAIL,
-			payload: 'User email or password is invalid',
+			payload: finalError
+				? finalError
+				: 'User email or password is invalid',
 		});
 	}
 };
